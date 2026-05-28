@@ -1,0 +1,1152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Projects — Greyfikal Apriyuda</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet" />
+    <style>
+        /* ===================== TOKENS ===================== */
+        :root {
+            --bg: #F7F5F0;
+            --bg2: #EDEAE3;
+            --bg3: #E2DED5;
+            --surface: #FFFFFF;
+            --border: #D4CFC5;
+            --text: #1C1A16;
+            --muted: #7A7568;
+            --accent: #C84B2F;
+            --accent2: #1A6B8A;
+            --tag-bg: #EDE9E2;
+            --shadow: rgba(28, 26, 22, 0.08);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg: #111110;
+                --bg2: #181816;
+                --bg3: #222220;
+                --surface: #1E1D1B;
+                --border: #2E2D2A;
+                --text: #F0EDE6;
+                --muted: #888580;
+                --accent: #E8603E;
+                --accent2: #4DAED4;
+                --tag-bg: #262523;
+                --shadow: rgba(0, 0, 0, 0.35);
+            }
+        }
+
+        /* ===================== RESET ===================== */
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Instrument Sans', sans-serif;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* ===================== GRAIN ===================== */
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            z-index: 999;
+            pointer-events: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+            opacity: 0.5;
+        }
+
+        /* ===================== HEADER ===================== */
+        header {
+            padding: 3.5rem 4vw 0;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--muted);
+            text-decoration: none;
+            letter-spacing: 0.05em;
+            transition: color 0.2s;
+            padding: 0.5rem 0;
+        }
+
+        .back-link:hover {
+            color: var(--accent);
+        }
+
+        .back-link svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        .header-meta {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--muted);
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            text-align: right;
+            line-height: 1.8;
+        }
+
+        .header-title-block {
+            margin-bottom: 2rem;
+        }
+
+        .eyebrow {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .eyebrow::before {
+            content: '';
+            display: block;
+            width: 2rem;
+            height: 1px;
+            background: var(--accent);
+        }
+
+        h1 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(4rem, 12vw, 9rem);
+            line-height: 0.9;
+            letter-spacing: 0.02em;
+            color: var(--text);
+        }
+
+        h1 em {
+            font-style: normal;
+            -webkit-text-stroke: 1.5px var(--text);
+            color: transparent;
+        }
+
+        .header-desc {
+            max-width: 520px;
+            color: var(--muted);
+            font-size: 1rem;
+            line-height: 1.7;
+            margin-top: 1.5rem;
+        }
+
+        /* ===================== DIVIDER ===================== */
+        .divider {
+            border: none;
+            border-top: 1px solid var(--border);
+            margin: 2.5rem 0;
+        }
+
+        /* ===================== FILTER BAR ===================== */
+        .filter-bar {
+            padding: 0 4vw;
+            max-width: 1400px;
+            margin: 0 auto 3rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .filter-row {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--muted);
+            min-width: 60px;
+        }
+
+        .filter-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .pill {
+            padding: 0.35rem 0.9rem;
+            border-radius: 100px;
+            font-size: 0.78rem;
+            font-weight: 500;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--muted);
+            cursor: pointer;
+            transition: all 0.18s;
+            font-family: 'Instrument Sans', sans-serif;
+            white-space: nowrap;
+        }
+
+        .pill:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .pill.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #fff;
+        }
+
+        .pill.active-2 {
+            background: var(--accent2);
+            border-color: var(--accent2);
+            color: #fff;
+        }
+
+        /* ===================== RESULTS COUNT ===================== */
+        .results-bar {
+            padding: 0 4vw;
+            max-width: 1400px;
+            margin: 0 auto 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .results-count {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--muted);
+            letter-spacing: 0.05em;
+        }
+
+        .results-count span {
+            color: var(--accent);
+            font-weight: 500;
+        }
+
+        /* ===================== GRID ===================== */
+        .projects-grid {
+            padding: 0 4vw 6rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 1.5rem;
+        }
+
+        /* Card sizing — editorial asymmetry */
+        .card {
+            grid-column: span 4;
+        }
+
+        .card.wide {
+            grid-column: span 8;
+        }
+
+        .card.medium {
+            grid-column: span 6;
+        }
+
+        @media (max-width: 1100px) {
+
+            .card,
+            .card.wide,
+            .card.medium {
+                grid-column: span 6;
+            }
+        }
+
+        @media (max-width: 700px) {
+
+            .card,
+            .card.wide,
+            .card.medium {
+                grid-column: span 12;
+            }
+        }
+
+        /* ===================== CARD ===================== */
+        .project-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s;
+            height: 100%;
+        }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent), var(--accent2));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 48px var(--shadow);
+            border-color: transparent;
+        }
+
+        .project-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        /* card hidden state */
+        .project-card.hidden {
+            display: none;
+        }
+
+        .card-number {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
+            color: var(--muted);
+            letter-spacing: 0.1em;
+            margin-bottom: 1.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .card-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-size: 0.65rem;
+            color: #22C55E;
+            letter-spacing: 0.05em;
+        }
+
+        .card-status::before {
+            content: '';
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: #22C55E;
+        }
+
+        .card-client {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--accent2);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .card-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(1.4rem, 2.5vw, 1.9rem);
+            letter-spacing: 0.03em;
+            line-height: 1.05;
+            margin-bottom: 1rem;
+            color: var(--text);
+        }
+
+        .card-desc {
+            font-size: 0.875rem;
+            color: var(--muted);
+            line-height: 1.7;
+            flex: 1;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Case study highlights */
+        .card-highlights {
+            margin-bottom: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .highlight-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.6rem;
+            font-size: 0.82rem;
+            color: var(--muted);
+            line-height: 1.5;
+        }
+
+        .highlight-item::before {
+            content: '↳';
+            color: var(--accent);
+            font-size: 0.75rem;
+            margin-top: 1px;
+            flex-shrink: 0;
+        }
+
+        .card-tech {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .tech-tag {
+            padding: 0.25rem 0.65rem;
+            border-radius: 4px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.68rem;
+            font-weight: 500;
+            background: var(--tag-bg);
+            color: var(--muted);
+            border: 1px solid var(--border);
+            transition: all 0.15s;
+        }
+
+        .tech-tag:hover {
+            color: var(--accent);
+            border-color: var(--accent);
+        }
+
+        .card-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-top: 1.25rem;
+            border-top: 1px solid var(--border);
+            margin-top: auto;
+        }
+
+        .card-role {
+            font-size: 0.72rem;
+            color: var(--muted);
+            font-family: 'JetBrains Mono', monospace;
+            letter-spacing: 0.05em;
+        }
+
+        .card-role span {
+            color: var(--text);
+            font-weight: 500;
+        }
+
+        .card-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--accent);
+            text-decoration: none;
+            font-family: 'Instrument Sans', sans-serif;
+            transition: gap 0.2s;
+            white-space: nowrap;
+        }
+
+        .card-link:hover {
+            gap: 0.7rem;
+        }
+
+        .card-link svg {
+            width: 13px;
+            height: 13px;
+        }
+
+        /* ===================== SKILLS STRIP ===================== */
+        .skills-strip {
+            background: var(--bg2);
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            padding: 3rem 4vw;
+            margin-bottom: 0;
+        }
+
+        .skills-strip-inner {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .skills-strip h2 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            letter-spacing: 0.03em;
+            margin-bottom: 2rem;
+        }
+
+        .skills-masonry {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .skill-block {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.25rem;
+            transition: border-color 0.2s, transform 0.2s;
+        }
+
+        .skill-block:hover {
+            border-color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .skill-block-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 0.75rem;
+        }
+
+        .skill-block-items {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+        }
+
+        .skill-chip {
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            background: var(--tag-bg);
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+
+        .skill-chip.primary {
+            background: rgba(200, 75, 47, 0.1);
+            border-color: rgba(200, 75, 47, 0.3);
+            color: var(--accent);
+        }
+
+        /* ===================== FOOTER ===================== */
+        footer {
+            padding: 2rem 4vw;
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+            border-top: 1px solid var(--border);
+        }
+
+        footer p {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--muted);
+            letter-spacing: 0.05em;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .footer-links a {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--muted);
+            text-decoration: none;
+            letter-spacing: 0.05em;
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent);
+        }
+
+        /* ===================== EMPTY STATE ===================== */
+        .empty-state {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 5rem 2rem;
+            display: none;
+        }
+
+        .empty-state.visible {
+            display: block;
+        }
+
+        .empty-state p {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--muted);
+        }
+
+        /* ===================== REVEAL ===================== */
+        .reveal {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s, transform 0.5s;
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ===================== NO RESULTS ===================== */
+        #no-results {
+            grid-column: 1 / -1;
+            padding: 4rem;
+            text-align: center;
+            display: none;
+        }
+
+        #no-results.show {
+            display: block;
+        }
+
+        #no-results p {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--muted);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header>
+        <div class="header-title-block reveal">
+            <h1>WHAT WE'VE<br><em>BUILT</em></h1>
+            <p class="header-desc">
+                Production systems deployed across Indonesian government institutions —
+                from education data infrastructure to civil aviation microsites.
+                Each project is live, maintained, and serving real users.
+            </p>
+        </div>
+        <hr class="divider" />
+    </header>
+
+    <!-- FILTER BAR -->
+    <div class="filter-bar reveal" style="transition-delay:0.1s">
+        <div class="filter-row">
+            <span class="filter-label">Client</span>
+            <div class="filter-pills" id="client-pills">
+                <button class="pill active" data-filter="client" data-value="all">All</button>
+                <button class="pill" data-filter="client" data-value="kemenhub">Kementerian Perhubungan</button>
+                <button class="pill" data-filter="client" data-value="disdik">Dinas Pendidikan Gunungkidul</button>
+            </div>
+        </div>
+        <div class="filter-row">
+            <span class="filter-label">Stack</span>
+            <div class="filter-pills" id="tech-pills">
+                <button class="pill active-2" data-filter="tech" data-value="all">All</button>
+                <button class="pill" data-filter="tech" data-value="laravel">Laravel</button>
+                <button class="pill" data-filter="tech" data-value="codeigniter">CodeIgniter</button>
+                <button class="pill" data-filter="tech" data-value="flask">Flask / Python</button>
+                <button class="pill" data-filter="tech" data-value="tailwind">Tailwind CSS</button>
+                <button class="pill" data-filter="tech" data-value="mysql">MySQL</button>
+                <button class="pill" data-filter="tech" data-value="sqlserver">SQL Server</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- RESULTS BAR -->
+    <div class="results-bar">
+        <p class="results-count">Showing <span id="count">8</span> of 8 projects</p>
+    </div>
+
+    <!-- PROJECTS GRID -->
+    <div class="projects-grid" id="projects-grid">
+
+        <!-- PROJECT 1: FAQ -->
+        <div class="card wide reveal" data-client="kemenhub" data-tech="laravel mysql bootstrap">
+            <div class="project-card">
+                <div class="card-number">
+                    <span>01 / 08</span>
+                    <span class="card-status">Live</span>
+                </div>
+                <div class="card-client">Kementerian Perhubungan</div>
+                <h2 class="card-title">Frequently Asked Questions System</h2>
+                <p class="card-desc">
+                    A web-based FAQ management system built for the Directorate General of Civil Aviation.
+                    Designed to help leadership efficiently map and organize frequently asked questions
+                    across organizational units, with clear ownership per responsible party.
+                </p>
+                <div class="card-highlights">
+                    <div class="highlight-item">Full CRUD management with question–answer separated by responsible party
+                    </div>
+                    <div class="highlight-item">Keyword-based search for fast information retrieval</div>
+                    <div class="highlight-item">User authentication with role-based access control</div>
+                    <div class="highlight-item">Admin dashboard for complete content management</div>
+                </div>
+                <div class="card-tech">
+                    <span class="tech-tag">Laravel</span>
+                    <span class="tech-tag">Bootstrap</span>
+                    <span class="tech-tag">JavaScript</span>
+                    <span class="tech-tag">MySQL</span>
+                    <span class="tech-tag">PHP</span>
+                </div>
+                <div class="card-footer">
+                    <div class="card-role">Role: <span>Fullstack Developer</span></div>
+                    <a href="https://icap.kemenhub.go.id/faq/" class="card-link" target="_blank" rel="noopener">
+                        Visit Live <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                            <path d="M7 17L17 7M7 7h10v10" />
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- PROJECT 2: Microsite OBU -->
+        <div class="card reveal" style="transition-delay:0.05s" data-client="kemenhub"
+            data-tech="laravel tailwind mysql">
+            <div class="project-card">
+                <div class="card-number">
+                    <span>02 / 08</span>
+                    <span class="card-status">Live</span>
+                </div>
+                <div class="card-client">Kementerian Perhubungan</div>
+                <h2 class="card-title">Microsite OBU — Airport Authorities</h2>
+                <p class="card-desc">
+                    A scalable microsite platform serving every airport authority (Otoritas Bandara Udara)
+                    under the Directorate General of Civil Aviation. Each authority gets its own
+                    dedicated publication space under a unified system.
+                </p>
+                <div class="card-highlights">
+                    <div class="highlight-item">Multi-tenant architecture — one system, many airport authorities</div>
+                    <div class="highlight-item">Dynamic slug-based routing per authority</div>
+                    <div class="highlight-item">Built with Tailwind CSS for a modern, responsive UI</div>
+                </div>
+                <div class="card-tech">
+                    <span class="tech-tag">Laravel</span>
+                    <span class="tech-tag">Tailwind CSS</span>
+                    <span class="tech-tag">JavaScript</span>
+                    <span class="tech-tag">MySQL</span>
+                </div>
+                <div class="card-footer">
+                    <div class="card-role">Role: <span>Fullstack Developer</span></div>
+                    <a href="https://hubud.kemenhub.go.id/obu/" class="card-link" target="_blank" rel="noopener">
+                        Visit Live <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                            <path d="M7 17L17 7M7 7h10v10" />
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- PROJECT 3: Microsite UPBU -->
+        <div class="card reveal" style="transition-delay:0.1s" data-client="kemenhub"
+            data-tech="laravel mysql bootstrap">
+            <div class="project-card">
+                <div class="card-number">
+                    <span>03 / 08</span>
+                    <span class="card-status">Live</span>
+                </div>
+                <div class="card-client">Kementerian Perhubungan</div>
+                <h2 class="card-title">Microsite UPBU — Airport Units</h2>
+                <p class="card-desc">
+                    Microsite and publication system for every Unit Penyelenggara Bandar Udara (UPBU)
+                    under Ditjen Perhubungan Udara. Streamlines documentation
+                    and public-facing communication for each airport unit.
+                </p>
+                <div class="card-highlights">
+                    <div class="highlight-item">Unified CMS powering microsites across multiple airports</div>
+                    <div class="highlight-item">Slug-based URL structure per airport unit</div>
+                    <div class="highlight-item">Integrated with Kemenhub's main domain infrastructure</div>
+                </div>
+                <div class="card-tech">
+                    <span class="tech-tag">Laravel</span>
+                    <span class="tech-tag">Bootstrap</span>
+                    <span class="tech-tag">JavaScript</span>
+                    <span class="tech-tag">MySQL</span>
+                </div>
+                <div class="card-footer">
+                    <div class="card-role">Role: <span>Fullstack Developer</span></div>
+                    <a href="https://hubud.kemenhub.go.id/upbu/" class="card-link" target="_blank" rel="noopener">
+                        Visit Live <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                            <path d="M7 17L17 7M7 7h10v10" />
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- PROJECT 4: BTP -->
+        <div class="card medium reveal" style="transition-delay:0.15s" data-client="kemenhub"
+            data-tech="laravel tailwind">
+            <div class="project-card">
+                <div class="card-number">
+                    <span>04 / 08</span>
+                    <span class="card-status">Live</span>
+                </div>
+                <div class="card-client">Kementerian Perhubungan</div>
+                <h2 class="card-title">Balai Teknik Penerbangan Website</h2>
+                <p class="card-desc">
+                    Official publication website for Balai Teknik Penerbangan, the aviation
+                    engineering center under Kemenhub. Features a full content management system
+                    with public-facing pages for institutional communication.
+                </p>
+                <div class="card-highlights">
+                    <div class="highlight-item">Content management system with admin panel</div>
+                    <div class="highlight-item">Public-facing institutional website</div>
+                    <div class="highlight-item">Built with Tailwind CSS and MariaDB</div>
+                </div>
+                <div class="card-tech">
+                    <span class="tech-tag">Laravel</span>
+                    <span class="tech-tag">Tailwind CSS</span>
+                    <span class="tech-tag">JavaScript</span>
+                    <span class="tech-tag">MariaDB</span>
+                </div>
+                <div class="card-footer">
+                    <div class="card-role">Role: <span>Fullstack Developer</span></div>
+                    <a href="https://hubud.kemenhub.go.id/btp/" class="card-link" target="_blank" rel="noopener">
+                        Visit Live <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                            <path d="M7 17L17 7M7 7h10v10" />
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- PROJECT 5: School Monitor -->
+        <div class="card medium reveal" style="transition-delay:0.2s" data-client="disdik"
+            data-tech="codeigniter sqlserver bootstrap">
+            <div class="project-card">
+                <div class="card-number">
+                    <span>05 / 08</span>
+                    <span class="card-status">Live</span>
+                </div>
+                <div class="card-client">Dinas Pendidikan Kab. Gunungkidul</div>
+                <h2 class="card-title">School Website Monitoring System</h2>
+                <p class="card-desc">
+                    A centralized monitoring and publication platform for schools across
+                    Gunungkidul Regency. Built on CodeIgniter with SQL Server, each school
+                    gets its own microsite within a single managed system.
+                </p>
+                <div class="card-highlights">
+                    <div class="highlight-item">Multi-school microsite platform under one admin system</div>
+                    <div class="highlight-item">SQL Server backend for enterprise-grade data handling</div>
+                    <div class="highlight-item">Publication tools for school documentation and announcements</div>
+                </div>
+                <div class="card-tech">
+                    <span class="tech-tag">CodeIgniter</span>
+                    <span class="tech-tag">Bootstrap</span>
+                    <span class="tech-tag">JavaScript</span>
+                    <span class="tech-tag">SQL Server</span>
+                </div>
+                <div class="card-footer">
+                    <div class="card-role">Role: <span>Fullstack Developer</span></div>
+                    <a href="https://monitorweb.pendidikan.gunungkidulkab.go.id/" class="card-link" target="_blank"
+                        rel="noopener">
+                        Visit Live <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                            <path d="M7 17L17 7M7 7h10v10" />
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- PROJECT 6: BOS Tax -->
+        <div class="card reveal" style="transition-delay:0.25s" data-client="disdik"
+            data-tech="laravel mysql bootstrap">
+            <div class="project-card">
+                <div class="card-number">
+                    <span>06 / 08</span>
+                    <span class="card-status">Live</span>
+                </div>
+                <div class="card-client">Dinas Pendidikan Kab. Gunungkidul</div>
+                <h2 class="card-title">BOS Fund Tax Reporting System</h2>
+                <p class="card-desc">
+                    Tax reporting system for Bantuan Operasional Sekolah funds, used by
+                    schools across Gunungkidul. Simplifies compliance reporting for
+                    school operational budget tax obligations.
+                </p>
+                <div class="card-highlights">
+                    <div class="highlight-item">Structured tax reporting workflow for BOS fund compliance</div>
+                    <div class="highlight-item">Multi-school access with authentication</div>
+                </div>
+                <div class="card-tech">
+                    <span class="tech-tag">Laravel</span>
+                    <span class="tech-tag">Bootstrap</span>
+                    <span class="tech-tag">JavaScript</span>
+                    <span class="tech-tag">MySQL</span>
+                </div>
+                <div class="card-footer">
+                    <div class="card-role">Role: <span>Fullstack Developer</span></div>
+                    <a href="https://laporpajak.pendidikan.gunungkidulkab.go.id/" class="card-link" target="_blank"
+                        rel="noopener">
+                        Visit Live <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                            <path d="M7 17L17 7M7 7h10v10" />
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- PROJECT 7: Disdik Website -->
+        <div class="card reveal" style="transition-delay:0.3s" data-client="disdik" data-tech="laravel mysql bootstrap">
+            <div class="project-card">
+                <div class="card-number">
+                    <span>07 / 08</span>
+                    <span class="card-status">Live</span>
+                </div>
+                <div class="card-client">Dinas Pendidikan Kab. Gunungkidul</div>
+                <h2 class="card-title">Dinas Pendidikan Official Website</h2>
+                <p class="card-desc">
+                    Official website and publication system for the Gunungkidul District
+                    Education Office. Serves as the primary digital presence and
+                    communication channel for the institution.
+                </p>
+                <div class="card-highlights">
+                    <div class="highlight-item">Institutional website with CMS for news and publications</div>
+                    <div class="highlight-item">Public information portal for the regency education office</div>
+                </div>
+                <div class="card-tech">
+                    <span class="tech-tag">Laravel</span>
+                    <span class="tech-tag">Bootstrap</span>
+                    <span class="tech-tag">JavaScript</span>
+                    <span class="tech-tag">MySQL</span>
+                </div>
+                <div class="card-footer">
+                    <div class="card-role">Role: <span>Fullstack Developer</span></div>
+                    <a href="https://pendidikan.gunungkidulkab.go.id" class="card-link" target="_blank" rel="noopener">
+                        Visit Live <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                            <path d="M7 17L17 7M7 7h10v10" />
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- PROJECT 8: CBT -->
+        <div class="card wide reveal" style="transition-delay:0.35s" data-client="disdik"
+            data-tech="flask mysql bootstrap">
+            <div class="project-card">
+                <div class="card-number">
+                    <span>08 / 08</span>
+                    <span class="card-status">Live</span>
+                </div>
+                <div class="card-client">Dinas Pendidikan Kab. Gunungkidul</div>
+                <h2 class="card-title">ASPD Computer-Based Test (CBT) System</h2>
+                <p class="card-desc">
+                    A computer-based testing system for the ASPD (Asesmen Standarisasi Pendidikan Daerah)
+                    examination, built with Python Flask. Uniquely designed to work both
+                    online and fully offline — deployable via a VirtualBox disk image, making it
+                    accessible even in schools with limited or no internet connectivity.
+                </p>
+                <div class="card-highlights">
+                    <div class="highlight-item">Hybrid deployment — works online and fully offline via VirtualBox VM
+                        image</div>
+                    <div class="highlight-item">Python Flask backend, the only non-PHP project in the stack</div>
+                    <div class="highlight-item">Designed for low-connectivity school environments across the regency
+                    </div>
+                    <div class="highlight-item">Secure exam session management with time controls</div>
+                </div>
+                <div class="card-tech">
+                    <span class="tech-tag">Python</span>
+                    <span class="tech-tag">Flask</span>
+                    <span class="tech-tag">Bootstrap</span>
+                    <span class="tech-tag">JavaScript</span>
+                    <span class="tech-tag">MySQL</span>
+                    <span class="tech-tag">VirtualBox</span>
+                </div>
+                <div class="card-footer">
+                    <div class="card-role">Role: <span>Fullstack Developer</span></div>
+                    <a href="http://cbt.pendidikan.gunungkidulkab.go.id" class="card-link" target="_blank"
+                        rel="noopener">
+                        Visit Live <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                            <path d="M7 17L17 7M7 7h10v10" />
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Empty state -->
+        <div id="no-results">
+            <p>— No projects match the selected filters —</p>
+        </div>
+
+    </div>
+
+    <!-- SKILLS STRIP -->
+    <div class="skills-strip">
+        <div class="skills-strip-inner">
+            <div class="eyebrow reveal">Core Competencies</div>
+            <h2 class="reveal" style="transition-delay:0.05s">WHAT I<br><em
+                    style="-webkit-text-stroke:1.5px var(--text);color:transparent;">MASTER</em></h2>
+            <div class="skills-masonry">
+                <div class="skill-block reveal">
+                    <div class="skill-block-label">Backend</div>
+                    <div class="skill-block-items">
+                        <span class="skill-chip primary">Laravel</span>
+                        <span class="skill-chip primary">CodeIgniter</span>
+                        <span class="skill-chip primary">Flask</span>
+                        <span class="skill-chip">PHP</span>
+                        <span class="skill-chip">Python</span>
+                    </div>
+                </div>
+                <div class="skill-block reveal" style="transition-delay:0.05s">
+                    <div class="skill-block-label">Frontend</div>
+                    <div class="skill-block-items">
+                        <span class="skill-chip primary">Tailwind CSS</span>
+                        <span class="skill-chip">Bootstrap</span>
+                        <span class="skill-chip">JavaScript</span>
+                        <span class="skill-chip">jQuery</span>
+                        <span class="skill-chip">HTML/CSS</span>
+                    </div>
+                </div>
+                <div class="skill-block reveal" style="transition-delay:0.1s">
+                    <div class="skill-block-label">Database</div>
+                    <div class="skill-block-items">
+                        <span class="skill-chip primary">MySQL</span>
+                        <span class="skill-chip primary">SQL Server</span>
+                        <span class="skill-chip">MariaDB</span>
+                        <span class="skill-chip">Redis</span>
+                        <span class="skill-chip">Oracle</span>
+                    </div>
+                </div>
+                <div class="skill-block reveal" style="transition-delay:0.15s">
+                    <div class="skill-block-label">Infrastructure</div>
+                    <div class="skill-block-items">
+                        <span class="skill-chip primary">Nginx</span>
+                        <span class="skill-chip primary">Linux</span>
+                        <span class="skill-chip">Windows Server</span>
+                        <span class="skill-chip">Git</span>
+                        <span class="skill-chip">SSH</span>
+                    </div>
+                </div>
+                <div class="skill-block reveal" style="transition-delay:0.2s">
+                    <div class="skill-block-label">Security</div>
+                    <div class="skill-block-items">
+                        <span class="skill-chip primary">Fortigate</span>
+                        <span class="skill-chip primary">Barracuda WAF</span>
+                        <span class="skill-chip">BSSN ITSA</span>
+                        <span class="skill-chip">Hardening</span>
+                    </div>
+                </div>
+                <div class="skill-block reveal" style="transition-delay:0.25s">
+                    <div class="skill-block-label">Architecture</div>
+                    <div class="skill-block-items">
+                        <span class="skill-chip primary">System Design</span>
+                        <span class="skill-chip">SOLID</span>
+                        <span class="skill-chip">DRY</span>
+                        <span class="skill-chip">Multi-tenant</span>
+                        <span class="skill-chip">MVC</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>© 2025 Greyfikal Apriyuda · greyfikal9@gmail.com</p>
+        <div class="footer-links">
+            <a href="https://github.com/gryfklapryd" target="_blank" rel="noopener">GitHub</a>
+            <a href="https://linkedin.com/in/gryfklapryd" target="_blank" rel="noopener">LinkedIn</a>
+            <a href="https://greyfikal.web.id" target="_blank" rel="noopener">Website</a>
+        </div>
+    </footer>
+
+    <script>
+        // =====================
+        // FILTER LOGIC
+        // =====================
+        let activeClient = 'all';
+        let activeTech = 'all';
+
+        const cards = document.querySelectorAll('.projects-grid > .card');
+        const countEl = document.getElementById('count');
+        const noResults = document.getElementById('no-results');
+
+        function applyFilters() {
+            let visible = 0;
+
+            cards.forEach(card => {
+                const client = card.dataset.client || '';
+                const tech = card.dataset.tech || '';
+
+                const clientMatch = activeClient === 'all' || client === activeClient;
+                const techMatch = activeTech === 'all' || tech.includes(activeTech);
+
+                const show = clientMatch && techMatch;
+                card.style.display = show ? '' : 'none';
+                if (show) visible++;
+            });
+
+            countEl.textContent = visible;
+            noResults.classList.toggle('show', visible === 0);
+        }
+
+        // Client pills
+        document.querySelectorAll('[data-filter="client"]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('[data-filter="client"]').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                activeClient = btn.dataset.value;
+                applyFilters();
+            });
+        });
+
+        // Tech pills
+        document.querySelectorAll('[data-filter="tech"]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('[data-filter="tech"]').forEach(b => b.classList.remove('active-2'));
+                btn.classList.add('active-2');
+                activeTech = btn.dataset.value;
+                applyFilters();
+            });
+        });
+
+        // =====================
+        // SCROLL REVEAL
+        // =====================
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(e => {
+                if (e.isIntersecting) e.target.classList.add('visible');
+            });
+        }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    </script>
+</body>
+
+</html>
