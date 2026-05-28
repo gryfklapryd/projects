@@ -25,8 +25,39 @@
             --shadow: rgba(28, 26, 22, 0.08);
         }
 
+        /* Dark mode via class (manual toggle) */
+        html.dark {
+            --bg: #111110;
+            --bg2: #181816;
+            --bg3: #222220;
+            --surface: #1E1D1B;
+            --border: #2E2D2A;
+            --text: #F0EDE6;
+            --muted: #888580;
+            --accent: #E8603E;
+            --accent2: #4DAED4;
+            --tag-bg: #262523;
+            --shadow: rgba(0, 0, 0, 0.35);
+        }
+
+        /* Light mode via class (manual toggle) */
+        html.light {
+            --bg: #F7F5F0;
+            --bg2: #EDEAE3;
+            --bg3: #E2DED5;
+            --surface: #FFFFFF;
+            --border: #D4CFC5;
+            --text: #1C1A16;
+            --muted: #7A7568;
+            --accent: #C84B2F;
+            --accent2: #1A6B8A;
+            --tag-bg: #EDE9E2;
+            --shadow: rgba(28, 26, 22, 0.08);
+        }
+
+        /* System mode — no class on html, fallback to prefers-color-scheme */
         @media (prefers-color-scheme: dark) {
-            :root {
+            html:not(.light):not(.dark) {
                 --bg: #111110;
                 --bg2: #181816;
                 --bg3: #222220;
@@ -60,6 +91,7 @@
             font-family: 'Instrument Sans', sans-serif;
             overflow-x: hidden;
             min-height: 100vh;
+            transition: background 0.25s, color 0.25s;
         }
 
         /* ===================== GRAIN ===================== */
@@ -71,6 +103,66 @@
             pointer-events: none;
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
             opacity: 0.5;
+        }
+
+        /* ===================== THEME TOGGLE ===================== */
+        .theme-bar {
+            position: fixed;
+            top: 1.25rem;
+            right: 1.25rem;
+            z-index: 200;
+            display: flex;
+            align-items: center;
+            gap: 0;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            padding: 4px;
+            box-shadow: 0 4px 16px var(--shadow);
+            transition: background 0.25s, border-color 0.25s;
+        }
+
+        .theme-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.35rem;
+            padding: 0.35rem 0.75rem;
+            border-radius: 100px;
+            border: none;
+            background: transparent;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--muted);
+            cursor: pointer;
+            transition: all 0.18s;
+            white-space: nowrap;
+        }
+
+        .theme-btn svg {
+            width: 13px;
+            height: 13px;
+            flex-shrink: 0;
+        }
+
+        .theme-btn:hover {
+            color: var(--text);
+        }
+
+        .theme-btn.active {
+            background: var(--bg3);
+            color: var(--text);
+            font-weight: 600;
+        }
+
+        /* dividers between buttons */
+        .theme-sep {
+            width: 1px;
+            height: 14px;
+            background: var(--border);
+            flex-shrink: 0;
         }
 
         /* ===================== HEADER ===================== */
@@ -167,7 +259,6 @@
             margin-top: 1.5rem;
         }
 
-        /* ===================== DIVIDER ===================== */
         .divider {
             border: none;
             border-top: 1px solid var(--border);
@@ -269,7 +360,6 @@
             gap: 1.5rem;
         }
 
-        /* Card sizing — editorial asymmetry */
         .card {
             grid-column: span 4;
         }
@@ -298,6 +388,19 @@
             .card.medium {
                 grid-column: span 12;
             }
+
+            .theme-bar {
+                top: 0.75rem;
+                right: 0.75rem;
+            }
+
+            .theme-btn span {
+                display: none;
+            }
+
+            .theme-btn {
+                padding: 0.35rem 0.5rem;
+            }
         }
 
         /* ===================== CARD ===================== */
@@ -310,7 +413,7 @@
             flex-direction: column;
             position: relative;
             overflow: hidden;
-            transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s;
+            transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s, background 0.25s;
             height: 100%;
         }
 
@@ -335,11 +438,6 @@
 
         .project-card:hover::before {
             transform: scaleX(1);
-        }
-
-        /* card hidden state */
-        .project-card.hidden {
-            display: none;
         }
 
         .card-number {
@@ -397,7 +495,6 @@
             margin-bottom: 1.5rem;
         }
 
-        /* Case study highlights */
         .card-highlights {
             margin-bottom: 1.5rem;
             display: flex;
@@ -496,6 +593,7 @@
             border-bottom: 1px solid var(--border);
             padding: 3rem 4vw;
             margin-bottom: 0;
+            transition: background 0.25s;
         }
 
         .skills-strip-inner {
@@ -521,7 +619,7 @@
             border: 1px solid var(--border);
             border-radius: 12px;
             padding: 1.25rem;
-            transition: border-color 0.2s, transform 0.2s;
+            transition: border-color 0.2s, transform 0.2s, background 0.25s;
         }
 
         .skill-block:hover {
@@ -598,24 +696,6 @@
             color: var(--accent);
         }
 
-        /* ===================== EMPTY STATE ===================== */
-        .empty-state {
-            grid-column: 1 / -1;
-            text-align: center;
-            padding: 5rem 2rem;
-            display: none;
-        }
-
-        .empty-state.visible {
-            display: block;
-        }
-
-        .empty-state p {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.85rem;
-            color: var(--muted);
-        }
-
         /* ===================== REVEAL ===================== */
         .reveal {
             opacity: 0;
@@ -649,6 +729,33 @@
 </head>
 
 <body>
+
+    <!-- THEME TOGGLE BAR -->
+    <div class="theme-bar" role="group" aria-label="Theme selector">
+        <button class="theme-btn" id="btn-light" onclick="setTheme('light')" title="Light mode">
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="4" />
+                <path
+                    d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
+            </svg>
+            <span>Light</span>
+        </button>
+        <div class="theme-sep"></div>
+        <button class="theme-btn active" id="btn-system" onclick="setTheme('system')" title="System mode">
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <rect x="2" y="3" width="20" height="14" rx="2" />
+                <path d="M8 21h8M12 17v4" />
+            </svg>
+            <span>System</span>
+        </button>
+        <div class="theme-sep"></div>
+        <button class="theme-btn" id="btn-dark" onclick="setTheme('dark')" title="Dark mode">
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+            </svg>
+            <span>Dark</span>
+        </button>
+    </div>
 
     <!-- HEADER -->
     <header>
@@ -698,17 +805,12 @@
         <!-- PROJECT 1: FAQ -->
         <div class="card wide reveal" data-client="kemenhub" data-tech="laravel mysql bootstrap">
             <div class="project-card">
-                <div class="card-number">
-                    <span>01 / 08</span>
-                    <span class="card-status">Live</span>
-                </div>
+                <div class="card-number"><span>01 / 08</span><span class="card-status">Live</span></div>
                 <div class="card-client">Kementerian Perhubungan</div>
                 <h2 class="card-title">Frequently Asked Questions System</h2>
-                <p class="card-desc">
-                    A web-based FAQ management system built for the Directorate General of Civil Aviation.
-                    Designed to help leadership efficiently map and organize frequently asked questions
-                    across organizational units, with clear ownership per responsible party.
-                </p>
+                <p class="card-desc">A web-based FAQ management system built for the Directorate General of Civil
+                    Aviation. Designed to help leadership efficiently map and organize frequently asked questions across
+                    organizational units, with clear ownership per responsible party.</p>
                 <div class="card-highlights">
                     <div class="highlight-item">Full CRUD management with question–answer separated by responsible party
                     </div>
@@ -717,19 +819,16 @@
                     <div class="highlight-item">Admin dashboard for complete content management</div>
                 </div>
                 <div class="card-tech">
-                    <span class="tech-tag">Laravel</span>
-                    <span class="tech-tag">Bootstrap</span>
-                    <span class="tech-tag">JavaScript</span>
-                    <span class="tech-tag">MySQL</span>
-                    <span class="tech-tag">PHP</span>
+                    <span class="tech-tag">Laravel</span><span class="tech-tag">Bootstrap</span><span
+                        class="tech-tag">JavaScript</span><span class="tech-tag">MySQL</span><span
+                        class="tech-tag">PHP</span>
                 </div>
                 <div class="card-footer">
                     <div class="card-role">Role: <span>Fullstack Developer</span></div>
-                    <a href="https://icap.kemenhub.go.id/faq/" class="card-link" target="_blank" rel="noopener">
-                        Visit Live <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                    <a href="https://icap.kemenhub.go.id/faq/" class="card-link" target="_blank" rel="noopener">Visit
+                        Live <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                             <path d="M7 17L17 7M7 7h10v10" />
-                        </svg>
-                    </a>
+                        </svg></a>
                 </div>
             </div>
         </div>
@@ -738,35 +837,27 @@
         <div class="card reveal" style="transition-delay:0.05s" data-client="kemenhub"
             data-tech="laravel tailwind mysql">
             <div class="project-card">
-                <div class="card-number">
-                    <span>02 / 08</span>
-                    <span class="card-status">Live</span>
-                </div>
+                <div class="card-number"><span>02 / 08</span><span class="card-status">Live</span></div>
                 <div class="card-client">Kementerian Perhubungan</div>
                 <h2 class="card-title">Microsite OBU — Airport Authorities</h2>
-                <p class="card-desc">
-                    A scalable microsite platform serving every airport authority (Otoritas Bandara Udara)
-                    under the Directorate General of Civil Aviation. Each authority gets its own
-                    dedicated publication space under a unified system.
-                </p>
+                <p class="card-desc">A scalable microsite platform serving every airport authority (Otoritas Bandara
+                    Udara) under the Directorate General of Civil Aviation. Each authority gets its own dedicated
+                    publication space under a unified system.</p>
                 <div class="card-highlights">
                     <div class="highlight-item">Multi-tenant architecture — one system, many airport authorities</div>
                     <div class="highlight-item">Dynamic slug-based routing per authority</div>
                     <div class="highlight-item">Built with Tailwind CSS for a modern, responsive UI</div>
                 </div>
                 <div class="card-tech">
-                    <span class="tech-tag">Laravel</span>
-                    <span class="tech-tag">Tailwind CSS</span>
-                    <span class="tech-tag">JavaScript</span>
-                    <span class="tech-tag">MySQL</span>
+                    <span class="tech-tag">Laravel</span><span class="tech-tag">Tailwind CSS</span><span
+                        class="tech-tag">JavaScript</span><span class="tech-tag">MySQL</span>
                 </div>
                 <div class="card-footer">
                     <div class="card-role">Role: <span>Fullstack Developer</span></div>
-                    <a href="https://hubud.kemenhub.go.id/obu/" class="card-link" target="_blank" rel="noopener">
-                        Visit Live <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                    <a href="https://hubud.kemenhub.go.id/obu/" class="card-link" target="_blank" rel="noopener">Visit
+                        Live <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                             <path d="M7 17L17 7M7 7h10v10" />
-                        </svg>
-                    </a>
+                        </svg></a>
                 </div>
             </div>
         </div>
@@ -775,35 +866,27 @@
         <div class="card reveal" style="transition-delay:0.1s" data-client="kemenhub"
             data-tech="laravel mysql bootstrap">
             <div class="project-card">
-                <div class="card-number">
-                    <span>03 / 08</span>
-                    <span class="card-status">Live</span>
-                </div>
+                <div class="card-number"><span>03 / 08</span><span class="card-status">Live</span></div>
                 <div class="card-client">Kementerian Perhubungan</div>
                 <h2 class="card-title">Microsite UPBU — Airport Units</h2>
-                <p class="card-desc">
-                    Microsite and publication system for every Unit Penyelenggara Bandar Udara (UPBU)
-                    under Ditjen Perhubungan Udara. Streamlines documentation
-                    and public-facing communication for each airport unit.
-                </p>
+                <p class="card-desc">Microsite and publication system for every Unit Penyelenggara Bandar Udara (UPBU)
+                    under Ditjen Perhubungan Udara. Streamlines documentation and public-facing communication for each
+                    airport unit.</p>
                 <div class="card-highlights">
                     <div class="highlight-item">Unified CMS powering microsites across multiple airports</div>
                     <div class="highlight-item">Slug-based URL structure per airport unit</div>
                     <div class="highlight-item">Integrated with Kemenhub's main domain infrastructure</div>
                 </div>
                 <div class="card-tech">
-                    <span class="tech-tag">Laravel</span>
-                    <span class="tech-tag">Bootstrap</span>
-                    <span class="tech-tag">JavaScript</span>
-                    <span class="tech-tag">MySQL</span>
+                    <span class="tech-tag">Laravel</span><span class="tech-tag">Bootstrap</span><span
+                        class="tech-tag">JavaScript</span><span class="tech-tag">MySQL</span>
                 </div>
                 <div class="card-footer">
                     <div class="card-role">Role: <span>Fullstack Developer</span></div>
-                    <a href="https://hubud.kemenhub.go.id/upbu/" class="card-link" target="_blank" rel="noopener">
-                        Visit Live <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                    <a href="https://hubud.kemenhub.go.id/upbu/" class="card-link" target="_blank" rel="noopener">Visit
+                        Live <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                             <path d="M7 17L17 7M7 7h10v10" />
-                        </svg>
-                    </a>
+                        </svg></a>
                 </div>
             </div>
         </div>
@@ -812,35 +895,27 @@
         <div class="card medium reveal" style="transition-delay:0.15s" data-client="kemenhub"
             data-tech="laravel tailwind">
             <div class="project-card">
-                <div class="card-number">
-                    <span>04 / 08</span>
-                    <span class="card-status">Live</span>
-                </div>
+                <div class="card-number"><span>04 / 08</span><span class="card-status">Live</span></div>
                 <div class="card-client">Kementerian Perhubungan</div>
                 <h2 class="card-title">Balai Teknik Penerbangan Website</h2>
-                <p class="card-desc">
-                    Official publication website for Balai Teknik Penerbangan, the aviation
-                    engineering center under Kemenhub. Features a full content management system
-                    with public-facing pages for institutional communication.
-                </p>
+                <p class="card-desc">Official publication website for Balai Teknik Penerbangan, the aviation engineering
+                    center under Kemenhub. Features a full content management system with public-facing pages for
+                    institutional communication.</p>
                 <div class="card-highlights">
                     <div class="highlight-item">Content management system with admin panel</div>
                     <div class="highlight-item">Public-facing institutional website</div>
                     <div class="highlight-item">Built with Tailwind CSS and MariaDB</div>
                 </div>
                 <div class="card-tech">
-                    <span class="tech-tag">Laravel</span>
-                    <span class="tech-tag">Tailwind CSS</span>
-                    <span class="tech-tag">JavaScript</span>
-                    <span class="tech-tag">MariaDB</span>
+                    <span class="tech-tag">Laravel</span><span class="tech-tag">Tailwind CSS</span><span
+                        class="tech-tag">JavaScript</span><span class="tech-tag">MariaDB</span>
                 </div>
                 <div class="card-footer">
                     <div class="card-role">Role: <span>Fullstack Developer</span></div>
-                    <a href="https://hubud.kemenhub.go.id/btp/" class="card-link" target="_blank" rel="noopener">
-                        Visit Live <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                    <a href="https://hubud.kemenhub.go.id/btp/" class="card-link" target="_blank" rel="noopener">Visit
+                        Live <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                             <path d="M7 17L17 7M7 7h10v10" />
-                        </svg>
-                    </a>
+                        </svg></a>
                 </div>
             </div>
         </div>
@@ -849,36 +924,28 @@
         <div class="card medium reveal" style="transition-delay:0.2s" data-client="disdik"
             data-tech="codeigniter sqlserver bootstrap">
             <div class="project-card">
-                <div class="card-number">
-                    <span>05 / 08</span>
-                    <span class="card-status">Live</span>
-                </div>
+                <div class="card-number"><span>05 / 08</span><span class="card-status">Live</span></div>
                 <div class="card-client">Dinas Pendidikan Kab. Gunungkidul</div>
                 <h2 class="card-title">School Website Monitoring System</h2>
-                <p class="card-desc">
-                    A centralized monitoring and publication platform for schools across
-                    Gunungkidul Regency. Built on CodeIgniter with SQL Server, each school
-                    gets its own microsite within a single managed system.
-                </p>
+                <p class="card-desc">A centralized monitoring and publication platform for schools across Gunungkidul
+                    Regency. Built on CodeIgniter with SQL Server, each school gets its own microsite within a single
+                    managed system.</p>
                 <div class="card-highlights">
                     <div class="highlight-item">Multi-school microsite platform under one admin system</div>
                     <div class="highlight-item">SQL Server backend for enterprise-grade data handling</div>
                     <div class="highlight-item">Publication tools for school documentation and announcements</div>
                 </div>
                 <div class="card-tech">
-                    <span class="tech-tag">CodeIgniter</span>
-                    <span class="tech-tag">Bootstrap</span>
-                    <span class="tech-tag">JavaScript</span>
-                    <span class="tech-tag">SQL Server</span>
+                    <span class="tech-tag">CodeIgniter</span><span class="tech-tag">Bootstrap</span><span
+                        class="tech-tag">JavaScript</span><span class="tech-tag">SQL Server</span>
                 </div>
                 <div class="card-footer">
                     <div class="card-role">Role: <span>Fullstack Developer</span></div>
                     <a href="https://monitorweb.pendidikan.gunungkidulkab.go.id/" class="card-link" target="_blank"
-                        rel="noopener">
-                        Visit Live <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                        rel="noopener">Visit Live <svg fill="none" stroke="currentColor" stroke-width="2.5"
+                            viewBox="0 0 24 24">
                             <path d="M7 17L17 7M7 7h10v10" />
-                        </svg>
-                    </a>
+                        </svg></a>
                 </div>
             </div>
         </div>
@@ -887,35 +954,26 @@
         <div class="card reveal" style="transition-delay:0.25s" data-client="disdik"
             data-tech="laravel mysql bootstrap">
             <div class="project-card">
-                <div class="card-number">
-                    <span>06 / 08</span>
-                    <span class="card-status">Live</span>
-                </div>
+                <div class="card-number"><span>06 / 08</span><span class="card-status">Live</span></div>
                 <div class="card-client">Dinas Pendidikan Kab. Gunungkidul</div>
                 <h2 class="card-title">BOS Fund Tax Reporting System</h2>
-                <p class="card-desc">
-                    Tax reporting system for Bantuan Operasional Sekolah funds, used by
-                    schools across Gunungkidul. Simplifies compliance reporting for
-                    school operational budget tax obligations.
-                </p>
+                <p class="card-desc">Tax reporting system for Bantuan Operasional Sekolah funds, used by schools across
+                    Gunungkidul. Simplifies compliance reporting for school operational budget tax obligations.</p>
                 <div class="card-highlights">
                     <div class="highlight-item">Structured tax reporting workflow for BOS fund compliance</div>
                     <div class="highlight-item">Multi-school access with authentication</div>
                 </div>
                 <div class="card-tech">
-                    <span class="tech-tag">Laravel</span>
-                    <span class="tech-tag">Bootstrap</span>
-                    <span class="tech-tag">JavaScript</span>
-                    <span class="tech-tag">MySQL</span>
+                    <span class="tech-tag">Laravel</span><span class="tech-tag">Bootstrap</span><span
+                        class="tech-tag">JavaScript</span><span class="tech-tag">MySQL</span>
                 </div>
                 <div class="card-footer">
                     <div class="card-role">Role: <span>Fullstack Developer</span></div>
                     <a href="https://laporpajak.pendidikan.gunungkidulkab.go.id/" class="card-link" target="_blank"
-                        rel="noopener">
-                        Visit Live <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                        rel="noopener">Visit Live <svg fill="none" stroke="currentColor" stroke-width="2.5"
+                            viewBox="0 0 24 24">
                             <path d="M7 17L17 7M7 7h10v10" />
-                        </svg>
-                    </a>
+                        </svg></a>
                 </div>
             </div>
         </div>
@@ -923,34 +981,26 @@
         <!-- PROJECT 7: Disdik Website -->
         <div class="card reveal" style="transition-delay:0.3s" data-client="disdik" data-tech="laravel mysql bootstrap">
             <div class="project-card">
-                <div class="card-number">
-                    <span>07 / 08</span>
-                    <span class="card-status">Live</span>
-                </div>
+                <div class="card-number"><span>07 / 08</span><span class="card-status">Live</span></div>
                 <div class="card-client">Dinas Pendidikan Kab. Gunungkidul</div>
                 <h2 class="card-title">Dinas Pendidikan Official Website</h2>
-                <p class="card-desc">
-                    Official website and publication system for the Gunungkidul District
-                    Education Office. Serves as the primary digital presence and
-                    communication channel for the institution.
-                </p>
+                <p class="card-desc">Official website and publication system for the Gunungkidul District Education
+                    Office. Serves as the primary digital presence and communication channel for the institution.</p>
                 <div class="card-highlights">
                     <div class="highlight-item">Institutional website with CMS for news and publications</div>
                     <div class="highlight-item">Public information portal for the regency education office</div>
                 </div>
                 <div class="card-tech">
-                    <span class="tech-tag">Laravel</span>
-                    <span class="tech-tag">Bootstrap</span>
-                    <span class="tech-tag">JavaScript</span>
-                    <span class="tech-tag">MySQL</span>
+                    <span class="tech-tag">Laravel</span><span class="tech-tag">Bootstrap</span><span
+                        class="tech-tag">JavaScript</span><span class="tech-tag">MySQL</span>
                 </div>
                 <div class="card-footer">
                     <div class="card-role">Role: <span>Fullstack Developer</span></div>
-                    <a href="https://pendidikan.gunungkidulkab.go.id" class="card-link" target="_blank" rel="noopener">
-                        Visit Live <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                    <a href="https://pendidikan.gunungkidulkab.go.id" class="card-link" target="_blank"
+                        rel="noopener">Visit Live <svg fill="none" stroke="currentColor" stroke-width="2.5"
+                            viewBox="0 0 24 24">
                             <path d="M7 17L17 7M7 7h10v10" />
-                        </svg>
-                    </a>
+                        </svg></a>
                 </div>
             </div>
         </div>
@@ -959,18 +1009,13 @@
         <div class="card wide reveal" style="transition-delay:0.35s" data-client="disdik"
             data-tech="flask mysql bootstrap">
             <div class="project-card">
-                <div class="card-number">
-                    <span>08 / 08</span>
-                    <span class="card-status">Live</span>
-                </div>
+                <div class="card-number"><span>08 / 08</span><span class="card-status">Live</span></div>
                 <div class="card-client">Dinas Pendidikan Kab. Gunungkidul</div>
                 <h2 class="card-title">ASPD Computer-Based Test (CBT) System</h2>
-                <p class="card-desc">
-                    A computer-based testing system for the ASPD (Asesmen Standarisasi Pendidikan Daerah)
-                    examination, built with Python Flask. Uniquely designed to work both
-                    online and fully offline — deployable via a VirtualBox disk image, making it
-                    accessible even in schools with limited or no internet connectivity.
-                </p>
+                <p class="card-desc">A computer-based testing system for the ASPD (Asesmen Standarisasi Pendidikan
+                    Daerah) examination, built with Python Flask. Uniquely designed to work both online and fully
+                    offline — deployable via a VirtualBox disk image, making it accessible even in schools with limited
+                    or no internet connectivity.</p>
                 <div class="card-highlights">
                     <div class="highlight-item">Hybrid deployment — works online and fully offline via VirtualBox VM
                         image</div>
@@ -980,30 +1025,24 @@
                     <div class="highlight-item">Secure exam session management with time controls</div>
                 </div>
                 <div class="card-tech">
-                    <span class="tech-tag">Python</span>
-                    <span class="tech-tag">Flask</span>
-                    <span class="tech-tag">Bootstrap</span>
-                    <span class="tech-tag">JavaScript</span>
-                    <span class="tech-tag">MySQL</span>
-                    <span class="tech-tag">VirtualBox</span>
+                    <span class="tech-tag">Python</span><span class="tech-tag">Flask</span><span
+                        class="tech-tag">Bootstrap</span><span class="tech-tag">JavaScript</span><span
+                        class="tech-tag">MySQL</span><span class="tech-tag">VirtualBox</span>
                 </div>
                 <div class="card-footer">
                     <div class="card-role">Role: <span>Fullstack Developer</span></div>
                     <a href="http://cbt.pendidikan.gunungkidulkab.go.id" class="card-link" target="_blank"
-                        rel="noopener">
-                        Visit Live <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                        rel="noopener">Visit Live <svg fill="none" stroke="currentColor" stroke-width="2.5"
+                            viewBox="0 0 24 24">
                             <path d="M7 17L17 7M7 7h10v10" />
-                        </svg>
-                    </a>
+                        </svg></a>
                 </div>
             </div>
         </div>
 
-        <!-- Empty state -->
         <div id="no-results">
             <p>— No projects match the selected filters —</p>
         </div>
-
     </div>
 
     <!-- SKILLS STRIP -->
@@ -1016,62 +1055,49 @@
                 <div class="skill-block reveal">
                     <div class="skill-block-label">Backend</div>
                     <div class="skill-block-items">
-                        <span class="skill-chip primary">Laravel</span>
-                        <span class="skill-chip primary">CodeIgniter</span>
-                        <span class="skill-chip primary">Flask</span>
-                        <span class="skill-chip">PHP</span>
-                        <span class="skill-chip">Python</span>
+                        <span class="skill-chip primary">Laravel</span><span
+                            class="skill-chip primary">CodeIgniter</span><span
+                            class="skill-chip primary">Flask</span><span class="skill-chip">PHP</span><span
+                            class="skill-chip">Python</span>
                     </div>
                 </div>
                 <div class="skill-block reveal" style="transition-delay:0.05s">
                     <div class="skill-block-label">Frontend</div>
                     <div class="skill-block-items">
-                        <span class="skill-chip primary">Tailwind CSS</span>
-                        <span class="skill-chip">Bootstrap</span>
-                        <span class="skill-chip">JavaScript</span>
-                        <span class="skill-chip">jQuery</span>
-                        <span class="skill-chip">HTML/CSS</span>
+                        <span class="skill-chip primary">Tailwind CSS</span><span
+                            class="skill-chip">Bootstrap</span><span class="skill-chip">JavaScript</span><span
+                            class="skill-chip">jQuery</span><span class="skill-chip">HTML/CSS</span>
                     </div>
                 </div>
                 <div class="skill-block reveal" style="transition-delay:0.1s">
                     <div class="skill-block-label">Database</div>
                     <div class="skill-block-items">
-                        <span class="skill-chip primary">MySQL</span>
-                        <span class="skill-chip primary">SQL Server</span>
-                        <span class="skill-chip">MariaDB</span>
-                        <span class="skill-chip">Redis</span>
-                        <span class="skill-chip">Oracle</span>
+                        <span class="skill-chip primary">MySQL</span><span class="skill-chip primary">SQL
+                            Server</span><span class="skill-chip">MariaDB</span><span
+                            class="skill-chip">Redis</span><span class="skill-chip">Oracle</span>
                     </div>
                 </div>
                 <div class="skill-block reveal" style="transition-delay:0.15s">
                     <div class="skill-block-label">Infrastructure</div>
                     <div class="skill-block-items">
-                        <span class="skill-chip primary">Nginx</span>
-                        <span class="skill-chip primary">Apache</span>
-                        <span class="skill-chip primary">Linux</span>
-                        <span class="skill-chip">Windows Server</span>
-                        <span class="skill-chip primary">Docker</span>
-                        <span class="skill-chip">Git</span>
-                        <span class="skill-chip">SSH</span>
+                        <span class="skill-chip primary">Nginx</span><span class="skill-chip primary">Linux</span><span
+                            class="skill-chip">Windows Server</span><span class="skill-chip">Git</span><span
+                            class="skill-chip">SSH</span>
                     </div>
                 </div>
                 <div class="skill-block reveal" style="transition-delay:0.2s">
                     <div class="skill-block-label">Security</div>
                     <div class="skill-block-items">
-                        <span class="skill-chip primary">Fortigate</span>
-                        <span class="skill-chip primary">Barracuda WAF</span>
-                        <span class="skill-chip">BSSN ITSA</span>
-                        <span class="skill-chip">Hardening</span>
+                        <span class="skill-chip primary">Fortigate</span><span class="skill-chip primary">Barracuda
+                            WAF</span><span class="skill-chip">BSSN ITSA</span><span class="skill-chip">Hardening</span>
                     </div>
                 </div>
                 <div class="skill-block reveal" style="transition-delay:0.25s">
                     <div class="skill-block-label">Architecture</div>
                     <div class="skill-block-items">
-                        <span class="skill-chip primary">System Design</span>
-                        <span class="skill-chip">SOLID</span>
-                        <span class="skill-chip">DRY</span>
-                        <span class="skill-chip">Multi-tenant</span>
-                        <span class="skill-chip">MVC</span>
+                        <span class="skill-chip primary">System Design</span><span class="skill-chip">SOLID</span><span
+                            class="skill-chip">DRY</span><span class="skill-chip">Multi-tenant</span><span
+                            class="skill-chip">MVC</span>
                     </div>
                 </div>
             </div>
@@ -1085,35 +1111,54 @@
 
     <script>
         // =====================
+        // THEME SYSTEM
+        // =====================
+        const STORAGE_KEY = 'gry-theme';
+
+        function setTheme(mode) {
+            // Remove both classes first
+            document.documentElement.classList.remove('light', 'dark');
+
+            if (mode === 'light') document.documentElement.classList.add('light');
+            else if (mode === 'dark') document.documentElement.classList.add('dark');
+            // 'system' = no class, CSS media query takes over
+
+            // Save preference
+            localStorage.setItem(STORAGE_KEY, mode);
+
+            // Update button states
+            document.querySelectorAll('.theme-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById('btn-' + mode).classList.add('active');
+        }
+
+        // Apply saved preference on load (before paint)
+        (function () {
+            const saved = localStorage.getItem(STORAGE_KEY) || 'system';
+            setTheme(saved);
+        })();
+
+        // =====================
         // FILTER LOGIC
         // =====================
         let activeClient = 'all';
         let activeTech = 'all';
-
         const cards = document.querySelectorAll('.projects-grid > .card');
         const countEl = document.getElementById('count');
         const noResults = document.getElementById('no-results');
 
         function applyFilters() {
             let visible = 0;
-
             cards.forEach(card => {
-                const client = card.dataset.client || '';
-                const tech = card.dataset.tech || '';
-
-                const clientMatch = activeClient === 'all' || client === activeClient;
-                const techMatch = activeTech === 'all' || tech.includes(activeTech);
-
+                const clientMatch = activeClient === 'all' || card.dataset.client === activeClient;
+                const techMatch = activeTech === 'all' || (card.dataset.tech || '').includes(activeTech);
                 const show = clientMatch && techMatch;
                 card.style.display = show ? '' : 'none';
                 if (show) visible++;
             });
-
             countEl.textContent = visible;
             noResults.classList.toggle('show', visible === 0);
         }
 
-        // Client pills
         document.querySelectorAll('[data-filter="client"]').forEach(btn => {
             btn.addEventListener('click', () => {
                 document.querySelectorAll('[data-filter="client"]').forEach(b => b.classList.remove('active'));
@@ -1123,7 +1168,6 @@
             });
         });
 
-        // Tech pills
         document.querySelectorAll('[data-filter="tech"]').forEach(btn => {
             btn.addEventListener('click', () => {
                 document.querySelectorAll('[data-filter="tech"]').forEach(b => b.classList.remove('active-2'));
@@ -1137,11 +1181,8 @@
         // SCROLL REVEAL
         // =====================
         const observer = new IntersectionObserver(entries => {
-            entries.forEach(e => {
-                if (e.isIntersecting) e.target.classList.add('visible');
-            });
+            entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
         }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
-
         document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
     </script>
 </body>
