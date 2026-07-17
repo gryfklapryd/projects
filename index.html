@@ -1,1313 +1,549 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Our Projects</title>
+    <title>Projects — Greyfikal Apriyuda</title>
+    <meta name="description" content="Eleven production systems built across Indonesian government institutions since 2017 — Laravel, Go microservices, and Next.js platforms serving real users." />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link
-        href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap"
-        rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
     <style>
-        /* ===================== TOKENS ===================== */
-        :root {
-            --bg: #F7F5F0;
-            --bg2: #EDEAE3;
-            --bg3: #E2DED5;
-            --surface: #FFFFFF;
-            --border: #D4CFC5;
-            --text: #1C1A16;
-            --muted: #7A7568;
-            --accent: #C84B2F;
-            --accent2: #1A6B8A;
-            --tag-bg: #EDE9E2;
-            --shadow: rgba(28, 26, 22, 0.08);
-        }
-
-        html.dark {
-            --bg: #111110;
-            --bg2: #181816;
-            --bg3: #222220;
-            --surface: #1E1D1B;
-            --border: #2E2D2A;
-            --text: #F0EDE6;
-            --muted: #888580;
-            --accent: #E8603E;
-            --accent2: #4DAED4;
-            --tag-bg: #262523;
-            --shadow: rgba(0, 0, 0, 0.35);
-        }
-
-        html.light {
-            --bg: #F7F5F0;
-            --bg2: #EDEAE3;
-            --bg3: #E2DED5;
-            --surface: #FFFFFF;
-            --border: #D4CFC5;
-            --text: #1C1A16;
-            --muted: #7A7568;
-            --accent: #C84B2F;
-            --accent2: #1A6B8A;
-            --tag-bg: #EDE9E2;
-            --shadow: rgba(28, 26, 22, 0.08);
-        }
-
-        @media (prefers-color-scheme: dark) {
-            html:not(.light):not(.dark) {
-                --bg: #111110;
-                --bg2: #181816;
-                --bg3: #222220;
-                --surface: #1E1D1B;
-                --border: #2E2D2A;
-                --text: #F0EDE6;
-                --muted: #888580;
-                --accent: #E8603E;
-                --accent2: #4DAED4;
-                --tag-bg: #262523;
-                --shadow: rgba(0, 0, 0, 0.35);
-            }
-        }
-
-        /* ===================== RESET ===================== */
-        *,
-        *::before,
-        *::after {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            background: var(--bg);
-            color: var(--text);
-            font-family: 'Instrument Sans', sans-serif;
-            overflow-x: hidden;
-            min-height: 100vh;
-            transition: background 0.25s, color 0.25s;
-        }
-
-        /* ===================== GRAIN ===================== */
-        body::after {
-            content: '';
-            position: fixed;
-            inset: 0;
-            z-index: 999;
-            pointer-events: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
-            opacity: 0.5;
-        }
-
-        /* ===================== CONTROLS BAR ===================== */
-        .controls-bar {
-            position: fixed;
-            top: 1.25rem;
-            right: 1.25rem;
-            z-index: 200;
-            display: flex;
-            align-items: center;
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 100px;
-            padding: 4px 6px;
-            box-shadow: 0 4px 16px var(--shadow);
-            transition: background 0.25s, border-color 0.25s;
-        }
-
-        .control-item {
-            display: flex;
-            align-items: center;
-            gap: 0.3rem;
-            padding: 0.25rem 0.4rem;
-        }
-
-        .control-icon {
-            width: 13px;
-            height: 13px;
-            color: var(--muted);
-            flex-shrink: 0;
-            pointer-events: none;
-        }
-
-        .control-select-wrap {
-            position: relative;
-            display: flex;
-            align-items: center;
-        }
-
-        .control-select {
-            appearance: none;
-            -webkit-appearance: none;
-            background: transparent;
-            border: none;
-            outline: none;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.65rem;
-            letter-spacing: 0.06em;
-            text-transform: uppercase;
-            color: var(--muted);
-            cursor: pointer;
-            padding-right: 14px;
-            transition: color 0.18s;
-        }
-
-        .control-select:hover,
-        .control-select:focus {
-            color: var(--text);
-        }
-
-        .control-chevron {
-            position: absolute;
-            right: 0;
-            width: 10px;
-            height: 10px;
-            color: var(--muted);
-            pointer-events: none;
-            flex-shrink: 0;
-        }
-
-        .controls-sep {
-            width: 1px;
-            height: 14px;
-            background: var(--border);
-            flex-shrink: 0;
-            margin: 0 2px;
-        }
-
-        @media (max-width: 700px) {
-            .controls-bar {
-                top: 0.75rem;
-                right: 0.75rem;
-                padding: 4px 4px;
-            }
-        }
-
-        /* ===================== HEADER ===================== */
-        header {
-            padding: 3.5rem 4vw 0;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        .header-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 3rem;
-            flex-wrap: wrap;
-            gap: 1.5rem;
-        }
-
-        .back-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.75rem;
-            color: var(--muted);
-            text-decoration: none;
-            letter-spacing: 0.05em;
-            transition: color 0.2s;
-            padding: 0.5rem 0;
-        }
-
-        .back-link:hover {
-            color: var(--accent);
-        }
-
-        .back-link svg {
-            width: 14px;
-            height: 14px;
-        }
-
-        .header-meta {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.7rem;
-            color: var(--muted);
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            text-align: right;
-            line-height: 1.8;
-        }
-
-        .header-title-block {
-            margin-bottom: 2rem;
-        }
-
-        .eyebrow {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.7rem;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            color: var(--accent);
-            margin-bottom: 0.75rem;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-
-        .eyebrow::before {
-            content: '';
-            display: block;
-            width: 2rem;
-            height: 1px;
-            background: var(--accent);
-        }
-
-        h1 {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: clamp(4rem, 12vw, 9rem);
-            line-height: 0.9;
-            letter-spacing: 0.02em;
-            color: var(--text);
-        }
-
-        h1 em {
-            font-style: normal;
-            -webkit-text-stroke: 1.5px var(--text);
-            color: transparent;
-        }
-
-        .header-desc {
-            max-width: 520px;
-            color: var(--muted);
-            font-size: 1rem;
-            line-height: 1.7;
-            margin-top: 1.5rem;
-        }
-
-        .divider {
-            border: none;
-            border-top: 1px solid var(--border);
-            margin: 2.5rem 0;
-        }
-
-        /* ===================== FILTER BAR ===================== */
-        .filter-bar {
-            padding: 0 4vw;
-            max-width: 1400px;
-            margin: 0 auto 3rem;
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        .filter-row {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            flex-wrap: wrap;
-        }
-
-        .filter-label {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.65rem;
-            letter-spacing: 0.12em;
-            text-transform: uppercase;
-            color: var(--muted);
-            min-width: 60px;
-        }
-
-        .filter-pills {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-        }
-
-        .pill {
-            padding: 0.35rem 0.9rem;
-            border-radius: 100px;
-            font-size: 0.78rem;
-            font-weight: 500;
-            border: 1px solid var(--border);
-            background: transparent;
-            color: var(--muted);
-            cursor: pointer;
-            transition: all 0.18s;
-            font-family: 'Instrument Sans', sans-serif;
-            white-space: nowrap;
-        }
-
-        .pill:hover {
-            border-color: var(--accent);
-            color: var(--accent);
-        }
-
-        .pill.active {
-            background: var(--accent);
-            border-color: var(--accent);
-            color: #fff;
-        }
-
-        .pill.active-2 {
-            background: var(--accent2);
-            border-color: var(--accent2);
-            color: #fff;
-        }
-
-        /* ===================== RESULTS COUNT ===================== */
-        .results-bar {
-            padding: 0 4vw;
-            max-width: 1400px;
-            margin: 0 auto 2rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .results-count {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.7rem;
-            color: var(--muted);
-            letter-spacing: 0.05em;
-        }
-
-        .results-count span {
-            color: var(--accent);
-            font-weight: 500;
-        }
-
-        /* ===================== GRID ===================== */
-        .projects-grid {
-            padding: 0 4vw 6rem;
-            max-width: 1400px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(12, 1fr);
-            gap: 1.5rem;
-        }
-
-        .card {
-            grid-column: span 4;
-        }
-
-        .card.wide {
-            grid-column: span 8;
-        }
-
-        .card.medium {
-            grid-column: span 6;
-        }
-
-        @media (max-width: 1100px) {
-
-            .card,
-            .card.wide,
-            .card.medium {
-                grid-column: span 6;
-            }
-        }
-
-        @media (max-width: 700px) {
-
-            .card,
-            .card.wide,
-            .card.medium {
-                grid-column: span 12;
-            }
-        }
-
-        /* ===================== CARD ===================== */
-        .project-card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 2rem;
-            display: flex;
-            flex-direction: column;
-            position: relative;
-            overflow: hidden;
-            transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s, background 0.25s;
-            height: 100%;
-        }
-
-        .project-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: linear-gradient(90deg, var(--accent), var(--accent2));
-            transform: scaleX(0);
-            transform-origin: left;
-            transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .project-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 48px var(--shadow);
-            border-color: transparent;
-        }
-
-        .project-card:hover::before {
-            transform: scaleX(1);
-        }
-
-        .card-number {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.65rem;
-            color: var(--muted);
-            letter-spacing: 0.1em;
-            margin-bottom: 1.25rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .card-status {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.4rem;
-            font-size: 0.65rem;
-            color: #22C55E;
-            letter-spacing: 0.05em;
-        }
-
-        .card-status::before {
-            content: '';
-            width: 5px;
-            height: 5px;
-            border-radius: 50%;
-            background: #22C55E;
-        }
-
-        .card-client {
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            letter-spacing: 0.12em;
-            color: var(--accent2);
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            font-family: 'JetBrains Mono', monospace;
-        }
-
-        .card-title {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: clamp(1.4rem, 2.5vw, 1.9rem);
-            letter-spacing: 0.03em;
-            line-height: 1.05;
-            margin-bottom: 1rem;
-            color: var(--text);
-        }
-
-        .card-desc {
-            font-size: 0.875rem;
-            color: var(--muted);
-            line-height: 1.7;
-            flex: 1;
-            margin-bottom: 1.5rem;
-        }
-
-        .card-highlights {
-            margin-bottom: 1.5rem;
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-
-        .highlight-item {
-            display: flex;
-            align-items: flex-start;
-            gap: 0.6rem;
-            font-size: 0.82rem;
-            color: var(--muted);
-            line-height: 1.5;
-        }
-
-        .highlight-item::before {
-            content: '↳';
-            color: var(--accent);
-            font-size: 0.75rem;
-            margin-top: 1px;
-            flex-shrink: 0;
-        }
-
-        .card-tech {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.4rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .tech-tag {
-            padding: 0.25rem 0.65rem;
-            border-radius: 4px;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.68rem;
-            font-weight: 500;
-            background: var(--tag-bg);
-            color: var(--muted);
-            border: 1px solid var(--border);
-            transition: all 0.15s;
-        }
-
-        .tech-tag:hover {
-            color: var(--accent);
-            border-color: var(--accent);
-        }
-
-        .card-footer {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding-top: 1.25rem;
-            border-top: 1px solid var(--border);
-            margin-top: auto;
-        }
-
-        .card-role {
-            font-size: 0.72rem;
-            color: var(--muted);
-            font-family: 'JetBrains Mono', monospace;
-            letter-spacing: 0.05em;
-        }
-
-        .card-role span {
-            color: var(--text);
-            font-weight: 500;
-        }
-
-        .card-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.4rem;
-            font-size: 0.8rem;
-            font-weight: 600;
-            color: var(--accent);
-            text-decoration: none;
-            font-family: 'Instrument Sans', sans-serif;
-            transition: gap 0.2s;
-            white-space: nowrap;
-        }
-
-        .card-link:hover {
-            gap: 0.7rem;
-        }
-
-        .card-link svg {
-            width: 13px;
-            height: 13px;
-        }
-
-        /* ===================== SKILLS STRIP ===================== */
-        .skills-strip {
-            background: var(--bg2);
-            border-top: 1px solid var(--border);
-            border-bottom: 1px solid var(--border);
-            padding: 3rem 4vw;
-            margin-bottom: 0;
-            transition: background 0.25s;
-        }
-
-        .skills-strip-inner {
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        .skills-strip h2 {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: clamp(2rem, 5vw, 3.5rem);
-            letter-spacing: 0.03em;
-            margin-bottom: 2rem;
-        }
-
-        .skills-masonry {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 1rem;
-        }
-
-        .skill-block {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 1.25rem;
-            transition: border-color 0.2s, transform 0.2s, background 0.25s;
-        }
-
-        .skill-block:hover {
-            border-color: var(--accent);
-            transform: translateY(-2px);
-        }
-
-        .skill-block-label {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.65rem;
-            letter-spacing: 0.12em;
-            text-transform: uppercase;
-            color: var(--muted);
-            margin-bottom: 0.75rem;
-        }
-
-        .skill-block-items {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.4rem;
-        }
-
-        .skill-chip {
-            padding: 0.2rem 0.6rem;
-            border-radius: 4px;
-            font-size: 0.75rem;
-            font-weight: 500;
-            background: var(--tag-bg);
-            color: var(--text);
-            border: 1px solid var(--border);
-        }
-
-        .skill-chip.primary {
-            background: rgba(200, 75, 47, 0.1);
-            border-color: rgba(200, 75, 47, 0.3);
-            color: var(--accent);
-        }
-
-        /* ===================== FOOTER ===================== */
-        footer {
-            padding: 2rem 4vw;
-            max-width: 1400px;
-            margin: 0 auto;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 1rem;
-            border-top: 1px solid var(--border);
-        }
-
-        footer p {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.7rem;
-            color: var(--muted);
-            letter-spacing: 0.05em;
-        }
-
-        .footer-links {
-            display: flex;
-            gap: 1.5rem;
-        }
-
-        .footer-links a {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.7rem;
-            color: var(--muted);
-            text-decoration: none;
-            letter-spacing: 0.05em;
-            transition: color 0.2s;
-        }
-
-        .footer-links a:hover {
-            color: var(--accent);
-        }
-
-        /* ===================== REVEAL ===================== */
-        .reveal {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.5s, transform 0.5s;
-        }
-
-        .reveal.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* ===================== NO RESULTS ===================== */
-        #no-results {
-            grid-column: 1 / -1;
-            padding: 4rem;
-            text-align: center;
-            display: none;
-        }
-
-        #no-results.show {
-            display: block;
-        }
-
-        #no-results p {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.85rem;
-            color: var(--muted);
-        }
+/* Hallmark · genre: modern-minimal · macrostructure: Portfolio Grid · theme: Cobalt
+ * (shared system — carried over verbatim from ../portfolio/tokens.css for brand
+ * consistency across the linked site; not a catalog rotation pick)
+ * nav: N9 Edge-aligned minimal · footer: Ft2 Inline single line
+ * enrichment: none (typography + honest counts only) · accent hue: 256 · studied: no
+ */
+
+:root {
+  --color-paper:          oklch(98.5% 0.004 250);
+  --color-paper-2:        oklch(96%   0.007 250);
+  --color-rule:           oklch(90%   0.009 252);
+  --color-rule-2:         oklch(83%   0.012 252);
+  --color-ink:            oklch(24%   0.020 258);
+  --color-ink-2:          oklch(34%   0.018 257);
+  --color-muted:          oklch(52%   0.014 257);
+
+  --color-accent:         oklch(58% 0.20 256);
+  --color-accent-strong:  oklch(50% 0.21 256);
+  --color-accent-ink:     oklch(99% 0.006 256);
+  --color-focus:          oklch(64% 0.19 256);
+
+  --color-graphite:       oklch(22% 0.016 260);
+  --color-graphite-2:     oklch(27% 0.018 260);
+  --color-graphite-ink:   oklch(95% 0.012 260);
+  --color-graphite-muted: oklch(72% 0.020 260);
+  --color-graphite-rule:  oklch(38% 0.020 260);
+
+  --color-live:           oklch(64% 0.15 152);
+
+  --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-body:    "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono:    "JetBrains Mono", ui-monospace, "SFMono-Regular", monospace;
+
+  --text-xs:   0.6875rem;
+  --text-sm:   0.8125rem;
+  --text-base: 1rem;
+  --text-md:   1.125rem;
+  --text-lg:   1.375rem;
+  --text-xl:   1.75rem;
+  --text-2xl:  2.25rem;
+  --text-3xl:  2.875rem;
+
+  --space-3xs: 0.125rem;
+  --space-2xs: 0.25rem;
+  --space-xs:  0.5rem;
+  --space-sm:  0.75rem;
+  --space-md:  1rem;
+  --space-lg:  1.5rem;
+  --space-xl:  2.5rem;
+  --space-2xl: 4rem;
+  --space-3xl: 6rem;
+
+  --page-max:    72rem;
+  --page-gutter: clamp(1.25rem, 4vw, 2.5rem);
+
+  --radius-control: 6px;
+  --radius-card:    8px;
+
+  --ease-out:    cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in:     cubic-bezier(0.7, 0, 0.84, 0);
+  --dur-micro: 120ms;
+  --dur-short: 220ms;
+  --dur-long:  420ms;
+
+  --z-sticky: 200;
+}
+
+[data-theme="dark"] {
+  --color-paper:          oklch(15% 0.010 258);
+  --color-paper-2:        oklch(19% 0.012 258);
+  --color-rule:           oklch(30% 0.014 258);
+  --color-rule-2:         oklch(38% 0.016 258);
+  --color-ink:            oklch(95% 0.008 258);
+  --color-ink-2:          oklch(88% 0.010 257);
+  --color-muted:          oklch(65% 0.016 257);
+
+  --color-accent:         oklch(70% 0.17 256);
+  --color-accent-strong:  oklch(76% 0.16 256);
+  --color-accent-ink:     oklch(14% 0.010 258);
+  --color-focus:          oklch(74% 0.17 256);
+
+  --color-graphite:       oklch(11% 0.012 260);
+  --color-graphite-2:     oklch(16% 0.014 260);
+  --color-graphite-ink:   oklch(95% 0.010 260);
+  --color-graphite-muted: oklch(68% 0.018 260);
+  --color-graphite-rule:  oklch(30% 0.016 260);
+
+  --color-live:           oklch(72% 0.16 152);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { overflow-x: clip; }
+html { scroll-behavior: smooth; }
+
+body {
+    background: var(--color-paper);
+    color: var(--color-ink-2);
+    font-family: var(--font-body);
+    line-height: 1.6;
+    transition: background var(--dur-long) var(--ease-out), color var(--dur-long) var(--ease-out);
+}
+
+h1, h2, h3 { font-family: var(--font-display); color: var(--color-ink); font-style: normal; line-height: 1.05; letter-spacing: -0.02em; }
+p { max-width: 65ch; }
+a { color: inherit; }
+
+::selection { background: color-mix(in oklch, var(--color-accent) 30%, transparent); }
+:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 3px; }
+
+.tnum { font-variant-numeric: tabular-nums; }
+.mono { font-family: var(--font-mono); }
+.section-inner { max-width: var(--page-max); margin: 0 auto; padding-inline: var(--page-gutter); }
+
+/* — reveal — */
+.reveal { opacity: 0; transform: translateY(10px); transition: opacity var(--dur-long) var(--ease-out), transform var(--dur-long) var(--ease-out); transition-delay: calc(var(--i, 0) * 60ms); }
+.reveal.is-in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) { .reveal { transition-duration: 1ms; transform: none; } }
+
+/* ============ NAV — N9 Edge-aligned minimal ============ */
+.nav-edge {
+    position: sticky; top: 0; z-index: var(--z-sticky);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: var(--space-md) var(--page-gutter);
+    background: color-mix(in oklch, var(--color-paper) 88%, transparent);
+    backdrop-filter: blur(14px) saturate(140%);
+    border-bottom: 1px solid var(--color-rule);
+}
+.nav-edge__brand {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    font-family: var(--font-display); font-weight: 600; font-size: var(--text-md);
+    text-decoration: none; color: var(--color-ink); white-space: nowrap;
+}
+.nav-edge__brand svg { width: 15px; height: 15px; color: var(--color-muted); transition: transform var(--dur-short) var(--ease-out); }
+.nav-edge__brand:hover svg { transform: translateX(-2px); }
+.fn { font-family: var(--font-mono); color: var(--color-accent); font-weight: 500; }
+
+.nav-edge__controls { display: flex; align-items: center; gap: var(--space-xs); }
+.icon-btn {
+    height: 36px; padding: 0 0.7rem; border-radius: var(--radius-control);
+    border: 1px solid var(--color-rule); background: var(--color-paper-2); color: var(--color-ink-2);
+    font-family: var(--font-mono); font-size: 0.72rem; font-weight: 500;
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    transition: border-color var(--dur-short) var(--ease-out), color var(--dur-short) var(--ease-out);
+    white-space: nowrap;
+}
+.icon-btn:hover { border-color: var(--color-accent); color: var(--color-accent); }
+
+/* ============ PAGE HEAD ============ */
+.page-head { padding-block: var(--space-2xl) var(--space-xl); }
+.page-head__tag {
+    font-family: var(--font-mono); font-size: var(--text-xs); text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--color-muted); margin-bottom: var(--space-md);
+}
+.page-head h1 { font-size: var(--text-3xl); font-weight: 600; }
+.page-head__desc { color: var(--color-muted); font-size: var(--text-md); line-height: 1.65; margin-top: var(--space-md); max-width: 58ch; }
+
+.stat-strip {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-xl);
+    padding-block: var(--space-lg); margin-top: var(--space-xl);
+    border-top: 1px solid var(--color-rule); border-bottom: 1px solid var(--color-rule);
+}
+.stat-strip b { display: block; font-family: var(--font-display); font-weight: 600; font-size: var(--text-2xl); color: var(--color-ink); }
+.stat-strip span { font-size: var(--text-sm); color: var(--color-muted); }
+@media (max-width: 40rem) { .stat-strip { grid-template-columns: repeat(3, 1fr); gap: var(--space-sm); } .stat-strip b { font-size: var(--text-xl); } }
+
+/* ============ FILTER BAR ============ */
+.filter-bar { padding-block: var(--space-xl); display: flex; flex-direction: column; gap: var(--space-md); }
+.filter-row { display: flex; align-items: baseline; gap: var(--space-md); flex-wrap: wrap; }
+.filter-row__label {
+    font-family: var(--font-mono); font-size: var(--text-xs); text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--color-muted); min-width: 4.5rem; padding-block: 0.4rem;
+}
+.filter-pills { display: flex; flex-wrap: wrap; gap: var(--space-2xs); }
+.pill {
+    padding: 0.4rem 0.85rem; border-radius: 100px; font-size: var(--text-sm); font-weight: 500;
+    border: 1px solid var(--color-rule); background: transparent; color: var(--color-muted);
+    cursor: pointer; font-family: var(--font-body); white-space: nowrap;
+    transition: border-color var(--dur-short) var(--ease-out), color var(--dur-short) var(--ease-out), background var(--dur-short) var(--ease-out);
+}
+.pill:hover { border-color: var(--color-accent); color: var(--color-accent); }
+.pill.is-active { background: var(--color-accent); border-color: var(--color-accent); color: var(--color-accent-ink); }
+
+.results-bar { padding-block: 0 var(--space-lg); }
+.results-bar p { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--color-muted); letter-spacing: 0.03em; }
+.results-bar span { color: var(--color-accent); font-weight: 500; }
+
+/* ============ PROJECT GRID — Portfolio Grid macrostructure ============ */
+.project-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-lg); padding-bottom: var(--space-3xl); }
+.project {
+    display: flex; flex-direction: column; gap: var(--space-sm);
+    padding: var(--space-lg); border: 1px solid var(--color-rule); border-radius: var(--radius-card);
+    transition: border-color var(--dur-short) var(--ease-out);
+}
+.project:hover { border-color: var(--color-rule-2); }
+.project.is-featured { grid-column: span 2; }
+@media (max-width: 60rem) { .project.is-featured { grid-column: span 2; } }
+@media (max-width: 40rem) { .project.is-featured { grid-column: span 1; } }
+
+.project__head { display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-sm); }
+.project__org { font-family: var(--font-mono); font-size: var(--text-xs); text-transform: uppercase; letter-spacing: 0.05em; color: var(--color-muted); }
+.project__year { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--color-muted); flex-shrink: 0; }
+.project__name { font-size: var(--text-md); font-weight: 600; line-height: 1.3; }
+.project__desc { font-size: var(--text-sm); color: var(--color-muted); line-height: 1.6; flex: 1; }
+.project__tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.project__tags span {
+    font-family: var(--font-mono); font-size: 0.68rem; padding: 0.2rem 0.5rem; border-radius: 4px;
+    border: 1px solid var(--color-rule); color: var(--color-muted);
+}
+.project__foot { display: flex; align-items: center; justify-content: space-between; gap: var(--space-sm); margin-top: var(--space-2xs); }
+.project__status { display: inline-flex; align-items: center; gap: 0.4rem; font-family: var(--font-mono); font-size: var(--text-xs); color: var(--color-muted); }
+.project__status.is-live::before { content: ""; width: 5px; height: 5px; border-radius: 50%; background: var(--color-live); flex-shrink: 0; }
+.project__link {
+    display: inline-flex; align-items: center; gap: 0.3rem; text-decoration: none; color: var(--color-accent);
+    font-size: var(--text-xs); font-weight: 600; white-space: nowrap;
+    border-bottom: 1px solid transparent; transition: border-color var(--dur-short) var(--ease-out), gap var(--dur-short) var(--ease-out);
+}
+.project__link:hover { border-color: var(--color-accent); gap: 0.5rem; }
+.project__link svg { width: 11px; height: 11px; }
+
+#no-results { grid-column: 1 / -1; padding: var(--space-3xl) 0; text-align: center; display: none; }
+#no-results.is-shown { display: block; }
+#no-results p { font-family: var(--font-mono); font-size: var(--text-sm); color: var(--color-muted); }
+
+@media (max-width: 60rem) { .project-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 40rem) { .project-grid { grid-template-columns: minmax(0, 1fr); } }
+
+/* ============ STACK / SKILLS — dark graphite band ============ */
+.band-dark { background: var(--color-graphite); color: var(--color-graphite-muted); padding-block: var(--space-2xl); }
+.band-dark h2 { color: var(--color-graphite-ink); font-size: var(--text-2xl); margin-bottom: var(--space-2xs); }
+.band-dark .section-sub { color: var(--color-graphite-muted); font-size: var(--text-md); margin-bottom: var(--space-xl); max-width: 52ch; }
+
+.stack-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr)); gap: var(--space-md); }
+.stack-block { border: 1px solid var(--color-graphite-rule); border-radius: var(--radius-card); padding: var(--space-lg); transition: border-color var(--dur-short) var(--ease-out); }
+.stack-block:hover { border-color: var(--color-accent); }
+.stack-block__label {
+    font-family: var(--font-mono); font-size: var(--text-xs); text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--color-graphite-muted); margin-bottom: var(--space-sm);
+}
+.stack-block__items { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.chip {
+    padding: 0.22rem 0.6rem; border-radius: 4px; font-size: 0.75rem; font-weight: 500;
+    background: var(--color-graphite-2); color: var(--color-graphite-ink); border: 1px solid var(--color-graphite-rule);
+}
+.chip.is-accent { background: color-mix(in oklch, var(--color-accent) 16%, transparent); border-color: color-mix(in oklch, var(--color-accent) 40%, transparent); color: var(--color-accent); }
+
+/* ============ FOOTER (Ft2) ============ */
+.foot-line { padding: var(--space-lg) var(--page-gutter); border-top: 1px solid var(--color-rule); display: flex; justify-content: center; }
+.foot-line p { font-size: var(--text-sm); color: var(--color-muted); text-align: center; }
+.foot-line .wordmark { font-family: var(--font-display); font-weight: 600; color: var(--color-ink-2); }
     </style>
 </head>
 
 <body>
 
-    <!-- CONTROLS BAR (language + theme) -->
-    <div class="controls-bar">
-        <div class="control-item">
-            <svg class="control-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                <circle cx="12" cy="12" r="10" />
-                <line x1="2" y1="12" x2="22" y2="12" />
-                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
-            </svg>
-            <div class="control-select-wrap">
-                <select id="lang-select" class="control-select" onchange="setLang(this.value)">
-                    <option value="en">EN</option>
-                    <option value="id">ID</option>
-                </select>
-                <svg class="control-chevron" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                    <path d="M6 9l6 6 6-6" />
-                </svg>
-            </div>
+    <!-- NAV — N9 Edge-aligned minimal -->
+    <header class="nav-edge">
+        <a href="https://greyfikal.web.id" class="nav-edge__brand">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6" /></svg>
+            greyfikal<span class="fn">()</span>
+        </a>
+        <div class="nav-edge__controls">
+            <button class="icon-btn" id="lang-btn" aria-label="Switch language">ID</button>
+            <button class="icon-btn" id="theme-btn" aria-label="Toggle theme" title="Toggle theme">◐</button>
         </div>
-        <div class="controls-sep"></div>
-        <div class="control-item">
-            <svg class="control-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                <circle cx="12" cy="12" r="4" />
-                <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
-            </svg>
-            <div class="control-select-wrap">
-                <select id="theme-select" class="control-select" onchange="setTheme(this.value)">
-                    <option value="system">System</option>
-                    <option value="light">Light</option>
-                    <option value="dark">Dark</option>
-                </select>
-                <svg class="control-chevron" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                    <path d="M6 9l6 6 6-6" />
-                </svg>
-            </div>
-        </div>
-    </div>
-
-    <!-- HEADER -->
-    <header>
-        <div class="header-title-block reveal">
-            <h1 data-i18n-html="h1">WHAT WE'VE<br><em>BUILT</em></h1>
-            <p class="header-desc" data-i18n="header-desc">
-                Production systems deployed across Indonesian government institutions —
-                from education data infrastructure to civil aviation microsites.
-                Each project is live, maintained, and serving real users.
-            </p>
-        </div>
-        <hr class="divider" />
     </header>
 
-    <!-- FILTER BAR -->
-    <div class="filter-bar reveal" style="transition-delay:0.1s">
-        <div class="filter-row">
-            <span class="filter-label" data-i18n="filter-client">Client</span>
-            <div class="filter-pills" id="client-pills">
-                <button class="pill active" data-filter="client" data-value="all" data-i18n="pill-all">All</button>
-                <button class="pill" data-filter="client" data-value="kemenhub">Kementerian Perhubungan</button>
-                <button class="pill" data-filter="client" data-value="disdik">Dinas Pendidikan Gunungkidul</button>
+    <div class="section-inner">
+        <!-- PAGE HEAD -->
+        <div class="page-head reveal" style="--i:0">
+            <p class="page-head__tag" data-en="Selected work · 2018 — 2026" data-id="Karya terpilih · 2018 — 2026">Selected work · 2018 — 2026</p>
+            <h1 data-en="Projects" data-id="Proyek">Projects</h1>
+            <p class="page-head__desc" data-en="Backend-focused development across Indonesian government institutions since 2017 — from education-data infrastructure and multi-tenant aviation microsites to a Go microservices member portal shipped via Kubernetes and ArgoCD."
+                data-id="Pengembangan backend di berbagai instansi pemerintah Indonesia sejak 2017 — dari infrastruktur data pendidikan dan microsite penerbangan multi-tenant hingga portal anggota microservices Go yang dirilis via Kubernetes dan ArgoCD.">
+                Backend-focused development across Indonesian government institutions since 2017 — from education-data infrastructure and multi-tenant aviation microsites to a Go microservices member portal shipped via Kubernetes and ArgoCD.</p>
+
+            <div class="stat-strip">
+                <div><b class="tnum">11</b><span data-en="projects shipped" data-id="proyek diluncurkan">projects shipped</span></div>
+                <div><b class="tnum">9</b><span data-en="years in production" data-id="tahun di lingkungan produksi">years in production</span></div>
+                <div><b class="tnum">3</b><span data-en="government institutions" data-id="instansi pemerintah">government institutions</span></div>
             </div>
         </div>
-        <div class="filter-row">
-            <span class="filter-label" data-i18n="filter-stack">Stack</span>
-            <div class="filter-pills" id="tech-pills">
-                <button class="pill active-2" data-filter="tech" data-value="all" data-i18n="pill-all">All</button>
-                <button class="pill" data-filter="tech" data-value="laravel">Laravel</button>
-                <button class="pill" data-filter="tech" data-value="codeigniter">CodeIgniter</button>
-                <button class="pill" data-filter="tech" data-value="flask">Flask / Python</button>
-                <button class="pill" data-filter="tech" data-value="tailwind">Tailwind CSS</button>
-                <button class="pill" data-filter="tech" data-value="mysql">MySQL</button>
-                <button class="pill" data-filter="tech" data-value="sqlserver">SQL Server</button>
+
+        <!-- FILTER BAR -->
+        <div class="filter-bar reveal" style="--i:1">
+            <div class="filter-row">
+                <span class="filter-row__label" data-en="Client" data-id="Klien">Client</span>
+                <div class="filter-pills" id="client-pills">
+                    <button class="pill is-active" data-filter="client" data-value="all" data-en="All" data-id="Semua">All</button>
+                    <button class="pill" data-filter="client" data-value="kemenhub">Kementerian Perhubungan</button>
+                    <button class="pill" data-filter="client" data-value="disdik">Dinas Pendidikan Gunungkidul</button>
+                    <button class="pill" data-filter="client" data-value="freelance" data-en="Freelance" data-id="Lepas">Freelance</button>
+                </div>
             </div>
-        </div>
-    </div>
-
-    <!-- RESULTS BAR -->
-    <div class="results-bar">
-        <p class="results-count"><span data-i18n="results-showing">Showing</span> <span id="count">8</span> <span data-i18n="results-of">of 8 projects</span></p>
-    </div>
-
-    <!-- PROJECTS GRID -->
-    <div class="projects-grid" id="projects-grid">
-
-        <!-- PROJECT 1: FAQ -->
-        <div class="card wide reveal" data-client="kemenhub" data-tech="laravel mysql bootstrap">
-            <div class="project-card">
-                <div class="card-number"><span>01 / 08</span><span class="card-status" data-i18n="status-live">Live</span></div>
-                <div class="card-client">Kementerian Perhubungan</div>
-                <h2 class="card-title" data-i18n="card1-title">Frequently Asked Questions System</h2>
-                <p class="card-desc" data-i18n="card1-desc">A web-based FAQ management system built for the Directorate General of Civil
-                    Aviation. Designed to help leadership efficiently map and organize frequently asked questions across
-                    organizational units, with clear ownership per responsible party.</p>
-                <div class="card-highlights">
-                    <div class="highlight-item" data-i18n="card1-h1">Full CRUD management with question–answer separated by responsible party</div>
-                    <div class="highlight-item" data-i18n="card1-h2">Keyword-based search for fast information retrieval</div>
-                    <div class="highlight-item" data-i18n="card1-h3">User authentication with role-based access control</div>
-                    <div class="highlight-item" data-i18n="card1-h4">Admin dashboard for complete content management</div>
-                </div>
-                <div class="card-tech">
-                    <span class="tech-tag">Laravel</span><span class="tech-tag">Bootstrap</span><span
-                        class="tech-tag">JavaScript</span><span class="tech-tag">MySQL</span><span
-                        class="tech-tag">PHP</span>
-                </div>
-                <div class="card-footer">
-                    <div class="card-role"><span data-i18n="role-label">Role:</span> <span data-i18n="role-value">Fullstack Developer</span></div>
-                    <a href="https://icap.kemenhub.go.id/faq/" class="card-link" target="_blank" rel="noopener"><span data-i18n="card-link">Visit Live</span> <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                            <path d="M7 17L17 7M7 7h10v10" />
-                        </svg></a>
+            <div class="filter-row">
+                <span class="filter-row__label" data-en="Stack" data-id="Teknologi">Stack</span>
+                <div class="filter-pills" id="tech-pills">
+                    <button class="pill is-active" data-filter="tech" data-value="all" data-en="All" data-id="Semua">All</button>
+                    <button class="pill" data-filter="tech" data-value="laravel">Laravel</button>
+                    <button class="pill" data-filter="tech" data-value="go">Go</button>
+                    <button class="pill" data-filter="tech" data-value="react">React / Next.js</button>
+                    <button class="pill" data-filter="tech" data-value="codeigniter">CodeIgniter</button>
+                    <button class="pill" data-filter="tech" data-value="flask">Flask</button>
                 </div>
             </div>
         </div>
 
-        <!-- PROJECT 2: Microsite OBU -->
-        <div class="card reveal" style="transition-delay:0.05s" data-client="kemenhub"
-            data-tech="laravel tailwind mysql">
-            <div class="project-card">
-                <div class="card-number"><span>02 / 08</span><span class="card-status" data-i18n="status-live">Live</span></div>
-                <div class="card-client">Kementerian Perhubungan</div>
-                <h2 class="card-title" data-i18n="card2-title">Microsite OBU — Airport Authorities</h2>
-                <p class="card-desc" data-i18n="card2-desc">A scalable microsite platform serving every airport authority (Otoritas Bandara
-                    Udara) under the Directorate General of Civil Aviation. Each authority gets its own dedicated
-                    publication space under a unified system.</p>
-                <div class="card-highlights">
-                    <div class="highlight-item" data-i18n="card2-h1">Multi-tenant architecture — one system, many airport authorities</div>
-                    <div class="highlight-item" data-i18n="card2-h2">Dynamic slug-based routing per authority</div>
-                    <div class="highlight-item" data-i18n="card2-h3">Built with Tailwind CSS for a modern, responsive UI</div>
-                </div>
-                <div class="card-tech">
-                    <span class="tech-tag">Laravel</span><span class="tech-tag">Tailwind CSS</span><span
-                        class="tech-tag">JavaScript</span><span class="tech-tag">MySQL</span>
-                </div>
-                <div class="card-footer">
-                    <div class="card-role"><span data-i18n="role-label">Role:</span> <span data-i18n="role-value">Fullstack Developer</span></div>
-                    <a href="https://hubud.kemenhub.go.id/obu/" class="card-link" target="_blank" rel="noopener"><span data-i18n="card-link">Visit Live</span> <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                            <path d="M7 17L17 7M7 7h10v10" />
-                        </svg></a>
-                </div>
-            </div>
+        <!-- RESULTS BAR -->
+        <div class="results-bar">
+            <p><span data-en="Showing" data-id="Menampilkan">Showing</span> <span id="count" class="tnum">11</span> <span data-en="of 11 projects" data-id="dari 11 proyek">of 11 projects</span></p>
         </div>
 
-        <!-- PROJECT 3: Microsite UPBU -->
-        <div class="card reveal" style="transition-delay:0.1s" data-client="kemenhub"
-            data-tech="laravel mysql bootstrap">
-            <div class="project-card">
-                <div class="card-number"><span>03 / 08</span><span class="card-status" data-i18n="status-live">Live</span></div>
-                <div class="card-client">Kementerian Perhubungan</div>
-                <h2 class="card-title" data-i18n="card3-title">Microsite UPBU — Airport Units</h2>
-                <p class="card-desc" data-i18n="card3-desc">Microsite and publication system for every Unit Penyelenggara Bandar Udara (UPBU)
-                    under Ditjen Perhubungan Udara. Streamlines documentation and public-facing communication for each
-                    airport unit.</p>
-                <div class="card-highlights">
-                    <div class="highlight-item" data-i18n="card3-h1">Unified CMS powering microsites across multiple airports</div>
-                    <div class="highlight-item" data-i18n="card3-h2">Slug-based URL structure per airport unit</div>
-                    <div class="highlight-item" data-i18n="card3-h3">Integrated with Kemenhub's main domain infrastructure</div>
-                </div>
-                <div class="card-tech">
-                    <span class="tech-tag">Laravel</span><span class="tech-tag">Bootstrap</span><span
-                        class="tech-tag">JavaScript</span><span class="tech-tag">MySQL</span>
-                </div>
-                <div class="card-footer">
-                    <div class="card-role"><span data-i18n="role-label">Role:</span> <span data-i18n="role-value">Fullstack Developer</span></div>
-                    <a href="https://hubud.kemenhub.go.id/upbu/" class="card-link" target="_blank" rel="noopener"><span data-i18n="card-link">Visit Live</span> <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                            <path d="M7 17L17 7M7 7h10v10" />
-                        </svg></a>
-                </div>
-            </div>
-        </div>
+        <!-- PROJECT GRID -->
+        <div class="project-grid" id="project-grid">
 
-        <!-- PROJECT 4: BTP -->
-        <div class="card medium reveal" style="transition-delay:0.15s" data-client="kemenhub"
-            data-tech="laravel tailwind">
-            <div class="project-card">
-                <div class="card-number"><span>04 / 08</span><span class="card-status" data-i18n="status-live">Live</span></div>
-                <div class="card-client">Kementerian Perhubungan</div>
-                <h2 class="card-title" data-i18n="card4-title">Balai Teknik Penerbangan Website</h2>
-                <p class="card-desc" data-i18n="card4-desc">Official publication website for Balai Teknik Penerbangan, the aviation engineering
-                    center under Kemenhub. Features a full content management system with public-facing pages for
-                    institutional communication.</p>
-                <div class="card-highlights">
-                    <div class="highlight-item" data-i18n="card4-h1">Content management system with admin panel</div>
-                    <div class="highlight-item" data-i18n="card4-h2">Public-facing institutional website</div>
-                    <div class="highlight-item" data-i18n="card4-h3">Built with Tailwind CSS and MariaDB</div>
+            <article class="project reveal" style="--i:2" data-client="kemenhub" data-tech="laravel react">
+                <div class="project__head"><span class="project__org">Kementerian Perhubungan</span><span class="project__year">2025</span></div>
+                <h2 class="project__name">Balai Teknik Penerbangan Portal</h2>
+                <p class="project__desc" data-en="Public and admin portal with dual SSO (ICAP OAuth2 + Fortify 2FA), role-based impersonation, and a 17-model PPID transparency module."
+                    data-id="Portal publik dan admin dengan SSO ganda (OAuth2 ICAP + Fortify 2FA), impersonasi berbasis peran, dan modul transparansi PPID 17 model.">Public and admin portal with dual SSO (ICAP OAuth2 + Fortify 2FA), role-based impersonation, and a 17-model PPID transparency module.</p>
+                <div class="project__tags"><span>Laravel 13</span><span>Inertia.js</span><span>React 19</span><span>TypeScript</span></div>
+                <div class="project__foot">
+                    <span class="project__status" data-en="Ongoing · internal" data-id="Berjalan · internal">Ongoing · internal</span>
                 </div>
-                <div class="card-tech">
-                    <span class="tech-tag">Laravel</span><span class="tech-tag">Tailwind CSS</span><span
-                        class="tech-tag">JavaScript</span><span class="tech-tag">MariaDB</span>
-                </div>
-                <div class="card-footer">
-                    <div class="card-role"><span data-i18n="role-label">Role:</span> <span data-i18n="role-value">Fullstack Developer</span></div>
-                    <a href="https://hubud.kemenhub.go.id/btp/" class="card-link" target="_blank" rel="noopener"><span data-i18n="card-link">Visit Live</span> <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                            <path d="M7 17L17 7M7 7h10v10" />
-                        </svg></a>
-                </div>
-            </div>
-        </div>
+            </article>
 
-        <!-- PROJECT 5: School Monitor -->
-        <div class="card medium reveal" style="transition-delay:0.2s" data-client="disdik"
-            data-tech="codeigniter sqlserver bootstrap">
-            <div class="project-card">
-                <div class="card-number"><span>05 / 08</span><span class="card-status" data-i18n="status-live">Live</span></div>
-                <div class="card-client">Dinas Pendidikan Kab. Gunungkidul</div>
-                <h2 class="card-title" data-i18n="card5-title">School Website Monitoring System</h2>
-                <p class="card-desc" data-i18n="card5-desc">A centralized monitoring and publication platform for schools across Gunungkidul
-                    Regency. Built on CodeIgniter with SQL Server, each school gets its own microsite within a single
-                    managed system.</p>
-                <div class="card-highlights">
-                    <div class="highlight-item" data-i18n="card5-h1">Multi-school microsite platform under one admin system</div>
-                    <div class="highlight-item" data-i18n="card5-h2">SQL Server backend for enterprise-grade data handling</div>
-                    <div class="highlight-item" data-i18n="card5-h3">Publication tools for school documentation and announcements</div>
+            <article class="project reveal" style="--i:3" data-client="kemenhub" data-tech="laravel">
+                <div class="project__head"><span class="project__org">Kementerian Perhubungan</span><span class="project__year">2026</span></div>
+                <h2 class="project__name">ICARES — Sistem PNBP</h2>
+                <p class="project__desc" data-en="Internal non-tax state revenue platform for DJPU's Finance Bureau — SIMPONI (BRI) payment-gateway integration via SOAP/ESB, queued jobs, and PDF/QR invoicing."
+                    data-id="Platform PNBP internal untuk Biro Keuangan DJPU — integrasi gateway pembayaran SIMPONI (BRI) via SOAP/ESB, queued job, dan invoice PDF/QR.">Internal non-tax state revenue platform for DJPU's Finance Bureau — SIMPONI (BRI) payment-gateway integration via SOAP/ESB, queued jobs, and PDF/QR invoicing.</p>
+                <div class="project__tags"><span>Laravel</span><span>SOAP/ESB</span><span>MySQL</span><span>yajra</span></div>
+                <div class="project__foot">
+                    <span class="project__status" data-en="In development · internal" data-id="Dalam pengembangan · internal">In development · internal</span>
                 </div>
-                <div class="card-tech">
-                    <span class="tech-tag">CodeIgniter</span><span class="tech-tag">Bootstrap</span><span
-                        class="tech-tag">JavaScript</span><span class="tech-tag">SQL Server</span>
-                </div>
-                <div class="card-footer">
-                    <div class="card-role"><span data-i18n="role-label">Role:</span> <span data-i18n="role-value">Fullstack Developer</span></div>
-                    <a href="https://monitorweb.pendidikan.gunungkidulkab.go.id/" class="card-link" target="_blank"
-                        rel="noopener"><span data-i18n="card-link">Visit Live</span> <svg fill="none" stroke="currentColor" stroke-width="2.5"
-                            viewBox="0 0 24 24">
-                            <path d="M7 17L17 7M7 7h10v10" />
-                        </svg></a>
-                </div>
-            </div>
-        </div>
+            </article>
 
-        <!-- PROJECT 6: BOS Tax -->
-        <div class="card reveal" style="transition-delay:0.25s" data-client="disdik"
-            data-tech="laravel mysql bootstrap">
-            <div class="project-card">
-                <div class="card-number"><span>06 / 08</span><span class="card-status" data-i18n="status-live">Live</span></div>
-                <div class="card-client">Dinas Pendidikan Kab. Gunungkidul</div>
-                <h2 class="card-title" data-i18n="card6-title">BOS Fund Tax Reporting System</h2>
-                <p class="card-desc" data-i18n="card6-desc">Tax reporting system for Bantuan Operasional Sekolah funds, used by schools across
-                    Gunungkidul. Simplifies compliance reporting for school operational budget tax obligations.</p>
-                <div class="card-highlights">
-                    <div class="highlight-item" data-i18n="card6-h1">Structured tax reporting workflow for BOS fund compliance</div>
-                    <div class="highlight-item" data-i18n="card6-h2">Multi-school access with authentication</div>
+            <article class="project is-featured reveal" style="--i:4" data-client="kemenhub" data-tech="go react">
+                <div class="project__head"><span class="project__org">Kementerian Perhubungan</span><span class="project__year">2026</span></div>
+                <h2 class="project__name">PLD — Ortala Member Portal</h2>
+                <p class="project__desc" data-en="Go microservices (user, integration, scheduler) behind a Next.js backoffice — JWT auth with rotation/revocation, TOTP/MFA with device-trust risk tracking, and a multi-step service-access approval workflow, deployed via Kubernetes/ArgoCD GitOps."
+                    data-id="Microservices Go (user, integration, scheduler) di belakang backoffice Next.js — autentikasi JWT dengan rotasi/pencabutan, TOTP/MFA dengan pelacakan risiko device-trust, dan alur persetujuan akses layanan multi-tahap, dirilis via GitOps Kubernetes/ArgoCD.">Go microservices (user, integration, scheduler) behind a Next.js backoffice — JWT auth with rotation/revocation, TOTP/MFA with device-trust risk tracking, and a multi-step service-access approval workflow, deployed via Kubernetes/ArgoCD GitOps.</p>
+                <div class="project__tags"><span>Go</span><span>Next.js</span><span>React 19</span><span>TypeScript</span><span>PostgreSQL</span><span>Kubernetes</span><span>ArgoCD</span></div>
+                <div class="project__foot">
+                    <span class="project__status" data-en="Lead backend developer · internal" data-id="Lead backend developer · internal">Lead backend developer · internal</span>
                 </div>
-                <div class="card-tech">
-                    <span class="tech-tag">Laravel</span><span class="tech-tag">Bootstrap</span><span
-                        class="tech-tag">JavaScript</span><span class="tech-tag">MySQL</span>
-                </div>
-                <div class="card-footer">
-                    <div class="card-role"><span data-i18n="role-label">Role:</span> <span data-i18n="role-value">Fullstack Developer</span></div>
-                    <a href="https://laporpajak.pendidikan.gunungkidulkab.go.id/" class="card-link" target="_blank"
-                        rel="noopener"><span data-i18n="card-link">Visit Live</span> <svg fill="none" stroke="currentColor" stroke-width="2.5"
-                            viewBox="0 0 24 24">
-                            <path d="M7 17L17 7M7 7h10v10" />
-                        </svg></a>
-                </div>
-            </div>
-        </div>
+            </article>
 
-        <!-- PROJECT 7: Disdik Website -->
-        <div class="card reveal" style="transition-delay:0.3s" data-client="disdik" data-tech="laravel mysql bootstrap">
-            <div class="project-card">
-                <div class="card-number"><span>07 / 08</span><span class="card-status" data-i18n="status-live">Live</span></div>
-                <div class="card-client">Dinas Pendidikan Kab. Gunungkidul</div>
-                <h2 class="card-title" data-i18n="card7-title">Dinas Pendidikan Official Website</h2>
-                <p class="card-desc" data-i18n="card7-desc">Official website and publication system for the Gunungkidul District Education
-                    Office. Serves as the primary digital presence and communication channel for the institution.</p>
-                <div class="card-highlights">
-                    <div class="highlight-item" data-i18n="card7-h1">Institutional website with CMS for news and publications</div>
-                    <div class="highlight-item" data-i18n="card7-h2">Public information portal for the regency education office</div>
+            <article class="project reveal" style="--i:5" data-client="kemenhub" data-tech="laravel">
+                <div class="project__head"><span class="project__org">Kementerian Perhubungan</span><span class="project__year">2025</span></div>
+                <h2 class="project__name">Frequently Asked Questions (ICAP)</h2>
+                <p class="project__desc" data-en="FAQ management platform for 77 active departmental users, with per-department ownership, answer-reuse logic, and a JSON-diff change-request/approval pipeline."
+                    data-id="Platform manajemen FAQ untuk 77 pengguna departemen aktif, dengan kepemilikan per-departemen, logika penggunaan-ulang jawaban, dan alur persetujuan change-request berbasis JSON-diff.">FAQ management platform for 77 active departmental users, with per-department ownership, answer-reuse logic, and a JSON-diff change-request/approval pipeline.</p>
+                <div class="project__tags"><span>Laravel 12</span><span>Sanctum</span><span>MySQL</span></div>
+                <div class="project__foot">
+                    <span class="project__status is-live" data-en="Live" data-id="Aktif">Live</span>
+                    <a class="project__link" href="https://icap.kemenhub.go.id/faq/" target="_blank" rel="noopener"><span data-en="Visit site" data-id="Kunjungi">Visit site</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17L17 7M7 7h10v10" /></svg></a>
                 </div>
-                <div class="card-tech">
-                    <span class="tech-tag">Laravel</span><span class="tech-tag">Bootstrap</span><span
-                        class="tech-tag">JavaScript</span><span class="tech-tag">MySQL</span>
-                </div>
-                <div class="card-footer">
-                    <div class="card-role"><span data-i18n="role-label">Role:</span> <span data-i18n="role-value">Fullstack Developer</span></div>
-                    <a href="https://pendidikan.gunungkidulkab.go.id" class="card-link" target="_blank"
-                        rel="noopener"><span data-i18n="card-link">Visit Live</span> <svg fill="none" stroke="currentColor" stroke-width="2.5"
-                            viewBox="0 0 24 24">
-                            <path d="M7 17L17 7M7 7h10v10" />
-                        </svg></a>
-                </div>
-            </div>
-        </div>
+            </article>
 
-        <!-- PROJECT 8: CBT -->
-        <div class="card wide reveal" style="transition-delay:0.35s" data-client="disdik"
-            data-tech="flask mysql bootstrap">
-            <div class="project-card">
-                <div class="card-number"><span>08 / 08</span><span class="card-status" data-i18n="status-live">Live</span></div>
-                <div class="card-client">Dinas Pendidikan Kab. Gunungkidul</div>
-                <h2 class="card-title" data-i18n="card8-title">ASPD Computer-Based Test (CBT) System</h2>
-                <p class="card-desc" data-i18n="card8-desc">A computer-based testing system for the ASPD (Asesmen Standarisasi Pendidikan
-                    Daerah) examination, built with Python Flask. Uniquely designed to work both online and fully
-                    offline — deployable via a VirtualBox disk image, making it accessible even in schools with limited
-                    or no internet connectivity.</p>
-                <div class="card-highlights">
-                    <div class="highlight-item" data-i18n="card8-h1">Hybrid deployment — works online and fully offline via VirtualBox VM image</div>
-                    <div class="highlight-item" data-i18n="card8-h2">Python Flask backend, the only non-PHP project in the stack</div>
-                    <div class="highlight-item" data-i18n="card8-h3">Designed for low-connectivity school environments across the regency</div>
-                    <div class="highlight-item" data-i18n="card8-h4">Secure exam session management with time controls</div>
+            <article class="project reveal" style="--i:0" data-client="kemenhub" data-tech="laravel">
+                <div class="project__head"><span class="project__org">Kementerian Perhubungan</span><span class="project__year">2025</span></div>
+                <h2 class="project__name">Microsite UPBU</h2>
+                <p class="project__desc" data-en="Multi-tenant publication platform serving 191 airports under DJPU from a single codebase — slug-based tenancy, flight-data sync, and PPID/complaint modules."
+                    data-id="Platform publikasi multi-tenant untuk 191 bandara di bawah DJPU dari satu basis kode — tenancy berbasis slug, sinkronisasi data penerbangan, dan modul PPID/pengaduan.">Multi-tenant publication platform serving 191 airports under DJPU from a single codebase — slug-based tenancy, flight-data sync, and PPID/complaint modules.</p>
+                <div class="project__tags"><span>Laravel 12</span><span>Vue</span><span>Tailwind</span><span>MySQL</span></div>
+                <div class="project__foot">
+                    <span class="project__status is-live" data-en="Live" data-id="Aktif">Live</span>
+                    <a class="project__link" href="https://hubud.kemenhub.go.id/upbu/" target="_blank" rel="noopener"><span data-en="Visit site" data-id="Kunjungi">Visit site</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17L17 7M7 7h10v10" /></svg></a>
                 </div>
-                <div class="card-tech">
-                    <span class="tech-tag">Python</span><span class="tech-tag">Flask</span><span
-                        class="tech-tag">Bootstrap</span><span class="tech-tag">JavaScript</span><span
-                        class="tech-tag">MySQL</span><span class="tech-tag">VirtualBox</span>
-                </div>
-                <div class="card-footer">
-                    <div class="card-role"><span data-i18n="role-label">Role:</span> <span data-i18n="role-value">Fullstack Developer</span></div>
-                    <a href="http://cbt.pendidikan.gunungkidulkab.go.id" class="card-link" target="_blank"
-                        rel="noopener"><span data-i18n="card-link">Visit Live</span> <svg fill="none" stroke="currentColor" stroke-width="2.5"
-                            viewBox="0 0 24 24">
-                            <path d="M7 17L17 7M7 7h10v10" />
-                        </svg></a>
-                </div>
-            </div>
-        </div>
+            </article>
 
-        <div id="no-results">
-            <p data-i18n="no-results">— No projects match the selected filters —</p>
-        </div>
-    </div>
+            <article class="project reveal" style="--i:1" data-client="kemenhub" data-tech="laravel">
+                <div class="project__head"><span class="project__org">Kementerian Perhubungan</span><span class="project__year">2024</span></div>
+                <h2 class="project__name">Microsite OBU</h2>
+                <p class="project__desc" data-en="Multi-tenant CMS for airport authority offices — granular RBAC, OAuth2 SSO with encrypted callbacks, and a custom cache-invalidation layer."
+                    data-id="CMS multi-tenant untuk kantor otoritas bandara — RBAC granular, SSO OAuth2 dengan callback terenkripsi, dan lapisan cache-invalidation kustom.">Multi-tenant CMS for airport authority offices — granular RBAC, OAuth2 SSO with encrypted callbacks, and a custom cache-invalidation layer.</p>
+                <div class="project__tags"><span>Laravel 12</span><span>Alpine.js</span><span>Tailwind</span></div>
+                <div class="project__foot">
+                    <span class="project__status" data-en="Ongoing · internal" data-id="Berjalan · internal">Ongoing · internal</span>
+                </div>
+            </article>
 
-    <!-- SKILLS STRIP -->
-    <div class="skills-strip">
-        <div class="skills-strip-inner">
-            <div class="eyebrow reveal" data-i18n="skills-eyebrow">Core Competencies</div>
-            <h2 class="reveal" style="transition-delay:0.05s" data-i18n-html="skills-h2">WHAT I<br><em
-                    style="-webkit-text-stroke:1.5px var(--text);color:transparent;">MASTER</em></h2>
-            <div class="skills-masonry">
-                <div class="skill-block reveal">
-                    <div class="skill-block-label" data-i18n="skill-backend">Backend</div>
-                    <div class="skill-block-items">
-                        <span class="skill-chip primary">Laravel</span><span
-                            class="skill-chip primary">CodeIgniter</span><span
-                            class="skill-chip primary">Flask</span><span class="skill-chip">PHP</span><span
-                            class="skill-chip">Python</span>
-                    </div>
+            <article class="project reveal" style="--i:2" data-client="freelance" data-tech="laravel">
+                <div class="project__head"><span class="project__org">Pemerintah Desa Gangsalan Lor</span><span class="project__year">2026</span></div>
+                <h2 class="project__name">Padukuhan Gangsalan Lor Website</h2>
+                <p class="project__desc" data-en="Village-government profile site with a full CRUD CMS for demographics, local businesses, and village assets, plus Chart.js population infographics."
+                    data-id="Situs profil pemerintah desa dengan CMS CRUD lengkap untuk data demografi, UMKM, dan aset desa, dilengkapi infografis populasi berbasis Chart.js.">Village-government profile site with a full CRUD CMS for demographics, local businesses, and village assets, plus Chart.js population infographics.</p>
+                <div class="project__tags"><span>Laravel 13</span><span>Tailwind</span><span>Chart.js</span></div>
+                <div class="project__foot">
+                    <span class="project__status" data-en="Freelance · 2026" data-id="Lepas · 2026">Freelance · 2026</span>
                 </div>
-                <div class="skill-block reveal" style="transition-delay:0.05s">
-                    <div class="skill-block-label" data-i18n="skill-frontend">Frontend</div>
-                    <div class="skill-block-items">
-                        <span class="skill-chip primary">Tailwind CSS</span><span
-                            class="skill-chip">Bootstrap</span><span class="skill-chip">JavaScript</span><span
-                            class="skill-chip">jQuery</span><span class="skill-chip">HTML/CSS</span>
-                    </div>
+            </article>
+
+            <article class="project reveal" style="--i:3" data-client="disdik" data-tech="flask">
+                <div class="project__head"><span class="project__org">Dinas Pendidikan Kab. Gunungkidul</span><span class="project__year">2020</span></div>
+                <h2 class="project__name">ASPD Computer-Based Test</h2>
+                <p class="project__desc" data-en="Computer-based testing system for regional standard-assessment exams, used by 547 schools — deployable online and fully offline via a VirtualBox VM image."
+                    data-id="Sistem ujian berbasis komputer untuk asesmen standar daerah, digunakan oleh 547 sekolah — dapat berjalan online maupun offline penuh via image VirtualBox.">Computer-based testing system for regional standard-assessment exams, used by 547 schools — deployable online and fully offline via a VirtualBox VM image.</p>
+                <div class="project__tags"><span>Flask</span><span>Python</span><span>MySQL</span></div>
+                <div class="project__foot">
+                    <span class="project__status is-live" data-en="Live" data-id="Aktif">Live</span>
+                    <a class="project__link" href="http://cbt.pendidikan.gunungkidulkab.go.id" target="_blank" rel="noopener"><span data-en="Visit site" data-id="Kunjungi">Visit site</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17L17 7M7 7h10v10" /></svg></a>
                 </div>
-                <div class="skill-block reveal" style="transition-delay:0.1s">
-                    <div class="skill-block-label" data-i18n="skill-database">Database</div>
-                    <div class="skill-block-items">
-                        <span class="skill-chip primary">MySQL</span><span class="skill-chip primary">SQL
-                            Server</span><span class="skill-chip">MariaDB</span><span
-                            class="skill-chip">Redis</span><span class="skill-chip">Oracle</span>
-                    </div>
+            </article>
+
+            <article class="project reveal" style="--i:4" data-client="disdik" data-tech="codeigniter">
+                <div class="project__head"><span class="project__org">Dinas Pendidikan Kab. Gunungkidul</span><span class="project__year">2019</span></div>
+                <h2 class="project__name">School Website Monitoring System</h2>
+                <p class="project__desc" data-en="Public monitoring platform tracking 1,917 schools across Gunungkidul Regency with real-time data display — fully public-facing, no admin accounts required."
+                    data-id="Platform monitoring publik yang melacak 1.917 sekolah di Kabupaten Gunungkidul dengan tampilan data real-time — sepenuhnya publik, tanpa akun admin.">Public monitoring platform tracking 1,917 schools across Gunungkidul Regency with real-time data display — fully public-facing, no admin accounts required.</p>
+                <div class="project__tags"><span>CodeIgniter</span><span>Bootstrap</span><span>SQL Server</span></div>
+                <div class="project__foot">
+                    <span class="project__status is-live" data-en="Live" data-id="Aktif">Live</span>
+                    <a class="project__link" href="https://monitorweb.pendidikan.gunungkidulkab.go.id/" target="_blank" rel="noopener"><span data-en="Visit site" data-id="Kunjungi">Visit site</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17L17 7M7 7h10v10" /></svg></a>
                 </div>
-                <div class="skill-block reveal" style="transition-delay:0.15s">
-                    <div class="skill-block-label" data-i18n="skill-infra">Infrastructure</div>
-                    <div class="skill-block-items">
-                        <span class="skill-chip primary">Nginx</span><span class="skill-chip primary">Linux</span><span
-                            class="skill-chip">Windows Server</span><span class="skill-chip">Git</span><span
-                            class="skill-chip">SSH</span>
-                    </div>
+            </article>
+
+            <article class="project reveal" style="--i:5" data-client="disdik" data-tech="laravel">
+                <div class="project__head"><span class="project__org">Dinas Pendidikan Kab. Gunungkidul</span><span class="project__year">2018</span></div>
+                <h2 class="project__name">BOS Fund Tax Reporting System</h2>
+                <p class="project__desc" data-en="Self-service, opt-in tax reporting tool for schools receiving BOS government operational funding."
+                    data-id="Alat pelaporan pajak self-service dan opt-in untuk sekolah penerima dana operasional BOS.">Self-service, opt-in tax reporting tool for schools receiving BOS government operational funding.</p>
+                <div class="project__tags"><span>Laravel</span><span>Bootstrap</span><span>MySQL</span></div>
+                <div class="project__foot">
+                    <span class="project__status is-live" data-en="Live" data-id="Aktif">Live</span>
+                    <a class="project__link" href="https://laporpajak.pendidikan.gunungkidulkab.go.id/" target="_blank" rel="noopener"><span data-en="Visit site" data-id="Kunjungi">Visit site</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17L17 7M7 7h10v10" /></svg></a>
                 </div>
-                <div class="skill-block reveal" style="transition-delay:0.2s">
-                    <div class="skill-block-label" data-i18n="skill-security">Security</div>
-                    <div class="skill-block-items">
-                        <span class="skill-chip primary">Fortigate</span><span class="skill-chip primary">Barracuda
-                            WAF</span><span class="skill-chip">BSSN ITSA</span><span class="skill-chip">Hardening</span>
-                    </div>
+            </article>
+
+            <article class="project reveal" style="--i:0" data-client="disdik" data-tech="laravel">
+                <div class="project__head"><span class="project__org">Dinas Pendidikan Kab. Gunungkidul</span><span class="project__year">2018</span></div>
+                <h2 class="project__name">Dinas Pendidikan Website</h2>
+                <p class="project__desc" data-en="Full CMS-driven publication site — dynamic hero video, live statistics, news, galleries, FAQ, and an official directory."
+                    data-id="Situs publikasi berbasis CMS lengkap — video hero dinamis, statistik langsung, berita, galeri, FAQ, dan direktori resmi.">Full CMS-driven publication site — dynamic hero video, live statistics, news, galleries, FAQ, and an official directory.</p>
+                <div class="project__tags"><span>Laravel</span><span>Bootstrap</span><span>MySQL</span></div>
+                <div class="project__foot">
+                    <span class="project__status is-live" data-en="Live" data-id="Aktif">Live</span>
+                    <a class="project__link" href="https://pendidikan.gunungkidulkab.go.id" target="_blank" rel="noopener"><span data-en="Visit site" data-id="Kunjungi">Visit site</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17L17 7M7 7h10v10" /></svg></a>
                 </div>
-                <div class="skill-block reveal" style="transition-delay:0.25s">
-                    <div class="skill-block-label" data-i18n="skill-arch">Architecture</div>
-                    <div class="skill-block-items">
-                        <span class="skill-chip primary">System Design</span><span class="skill-chip">SOLID</span><span
-                            class="skill-chip">DRY</span><span class="skill-chip">Multi-tenant</span><span
-                            class="skill-chip">MVC</span>
-                    </div>
-                </div>
+            </article>
+
+            <div id="no-results">
+                <p data-en="— No projects match the selected filters —" data-id="— Tidak ada proyek yang sesuai filter —">— No projects match the selected filters —</p>
             </div>
         </div>
     </div>
 
-    <!-- FOOTER -->
-    <footer>
-        <p>© 2025</p>
+    <!-- STACK / SKILLS -->
+    <section class="band-dark">
+        <div class="section-inner">
+            <h2 data-en="Stack" data-id="Teknologi">Stack</h2>
+            <p class="section-sub" data-en="The tools behind eleven projects — backend frameworks, auth, integration, and the infrastructure that keeps them running." data-id="Peralatan di balik sebelas proyek — kerangka kerja backend, autentikasi, integrasi, dan infrastruktur yang menjaganya tetap berjalan.">The tools behind eleven projects — backend frameworks, auth, integration, and the infrastructure that keeps them running.</p>
+            <div class="stack-grid">
+                <div class="stack-block">
+                    <div class="stack-block__label" data-en="Backend frameworks" data-id="Kerangka kerja backend">Backend frameworks</div>
+                    <div class="stack-block__items">
+                        <span class="chip is-accent">Laravel 10–13</span><span class="chip is-accent">Go</span><span class="chip">CodeIgniter</span><span class="chip">Flask</span>
+                    </div>
+                </div>
+                <div class="stack-block">
+                    <div class="stack-block__label" data-en="Frontend" data-id="Frontend">Frontend</div>
+                    <div class="stack-block__items">
+                        <span class="chip is-accent">Inertia.js + React</span><span class="chip is-accent">Next.js</span><span class="chip">Blade + Alpine.js</span><span class="chip">Vue</span><span class="chip">Tailwind CSS</span>
+                    </div>
+                </div>
+                <div class="stack-block">
+                    <div class="stack-block__label" data-en="Auth &amp; authorization" data-id="Autentikasi &amp; otorisasi">Auth &amp; authorization</div>
+                    <div class="stack-block__items">
+                        <span class="chip is-accent">Sanctum</span><span class="chip is-accent">JWT rotation</span><span class="chip">Fortify 2FA</span><span class="chip">TOTP/MFA</span><span class="chip">OAuth2 SSO</span>
+                    </div>
+                </div>
+                <div class="stack-block">
+                    <div class="stack-block__label" data-en="Integration &amp; data" data-id="Integrasi &amp; data">Integration &amp; data</div>
+                    <div class="stack-block__items">
+                        <span class="chip is-accent">SOAP/ESB</span><span class="chip is-accent">MySQL</span><span class="chip">PostgreSQL</span><span class="chip">SQL Server</span><span class="chip">Redis</span><span class="chip">MinIO</span>
+                    </div>
+                </div>
+                <div class="stack-block">
+                    <div class="stack-block__label" data-en="DevOps" data-id="DevOps">DevOps</div>
+                    <div class="stack-block__items">
+                        <span class="chip is-accent">Kubernetes</span><span class="chip is-accent">ArgoCD</span><span class="chip">GitLab CI/CD</span><span class="chip">GitHub Actions</span><span class="chip">Docker</span>
+                    </div>
+                </div>
+                <div class="stack-block">
+                    <div class="stack-block__label" data-en="Security" data-id="Keamanan">Security</div>
+                    <div class="stack-block__items">
+                        <span class="chip is-accent">Secure SDLC</span><span class="chip">Firewall/WAF</span><span class="chip">Encrypted-callback SSO</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER (Ft2) -->
+    <footer class="foot-line">
+        <p><span class="wordmark">greyfikal<span class="fn">()</span></span> · <span data-en="Built in Jakarta, shipped to production." data-id="Dibuat di Jakarta, dirilis ke produksi.">Built in Jakarta, shipped to production.</span> · © 2026</p>
     </footer>
 
     <script>
-        // =====================
-        // THEME SYSTEM
-        // =====================
-        const STORAGE_KEY = 'gry-theme';
-
-        function setTheme(mode) {
-            document.documentElement.classList.remove('light', 'dark');
-            if (mode === 'light') document.documentElement.classList.add('light');
-            else if (mode === 'dark') document.documentElement.classList.add('dark');
-            localStorage.setItem(STORAGE_KEY, mode);
-            document.getElementById('theme-select').value = mode;
-        }
-
-        // =====================
-        // I18N SYSTEM
-        // =====================
-        const LANG_KEY = 'gry-lang';
-
-        const translations = {
-            en: {
-                'page-title': 'Our Projects',
-                'h1': 'WHAT WE\'VE<br><em>BUILT</em>',
-                'header-desc': 'Production systems deployed across Indonesian government institutions — from education data infrastructure to civil aviation microsites. Each project is live, maintained, and serving real users.',
-                'filter-client': 'Client',
-                'filter-stack': 'Stack',
-                'pill-all': 'All',
-                'results-showing': 'Showing',
-                'results-of': 'of 8 projects',
-                'status-live': 'Live',
-                'role-label': 'Role:',
-                'role-value': 'Fullstack Developer',
-                'card-link': 'Visit Live',
-                'skills-eyebrow': 'Core Competencies',
-                'skills-h2': 'WHAT I<br><em style="-webkit-text-stroke:1.5px var(--text);color:transparent;">MASTER</em>',
-                'skill-backend': 'Backend',
-                'skill-frontend': 'Frontend',
-                'skill-database': 'Database',
-                'skill-infra': 'Infrastructure',
-                'skill-security': 'Security',
-                'skill-arch': 'Architecture',
-                'no-results': '— No projects match the selected filters —',
-                'theme-system': 'System',
-                'theme-light': 'Light',
-                'theme-dark': 'Dark',
-                'card1-title': 'Frequently Asked Questions System',
-                'card1-desc': 'A web-based FAQ management system built for the Directorate General of Civil Aviation. Designed to help leadership efficiently map and organize frequently asked questions across organizational units, with clear ownership per responsible party.',
-                'card1-h1': 'Full CRUD management with question–answer separated by responsible party',
-                'card1-h2': 'Keyword-based search for fast information retrieval',
-                'card1-h3': 'User authentication with role-based access control',
-                'card1-h4': 'Admin dashboard for complete content management',
-                'card2-title': 'Microsite OBU — Airport Authorities',
-                'card2-desc': 'A scalable microsite platform serving every airport authority (Otoritas Bandara Udara) under the Directorate General of Civil Aviation. Each authority gets its own dedicated publication space under a unified system.',
-                'card2-h1': 'Multi-tenant architecture — one system, many airport authorities',
-                'card2-h2': 'Dynamic slug-based routing per authority',
-                'card2-h3': 'Built with Tailwind CSS for a modern, responsive UI',
-                'card3-title': 'Microsite UPBU — Airport Units',
-                'card3-desc': 'Microsite and publication system for every Unit Penyelenggara Bandar Udara (UPBU) under Ditjen Perhubungan Udara. Streamlines documentation and public-facing communication for each airport unit.',
-                'card3-h1': 'Unified CMS powering microsites across multiple airports',
-                'card3-h2': 'Slug-based URL structure per airport unit',
-                'card3-h3': "Integrated with Kemenhub's main domain infrastructure",
-                'card4-title': 'Balai Teknik Penerbangan Website',
-                'card4-desc': 'Official publication website for Balai Teknik Penerbangan, the aviation engineering center under Kemenhub. Features a full content management system with public-facing pages for institutional communication.',
-                'card4-h1': 'Content management system with admin panel',
-                'card4-h2': 'Public-facing institutional website',
-                'card4-h3': 'Built with Tailwind CSS and MariaDB',
-                'card5-title': 'School Website Monitoring System',
-                'card5-desc': 'A centralized monitoring and publication platform for schools across Gunungkidul Regency. Built on CodeIgniter with SQL Server, each school gets its own microsite within a single managed system.',
-                'card5-h1': 'Multi-school microsite platform under one admin system',
-                'card5-h2': 'SQL Server backend for enterprise-grade data handling',
-                'card5-h3': 'Publication tools for school documentation and announcements',
-                'card6-title': 'BOS Fund Tax Reporting System',
-                'card6-desc': 'Tax reporting system for Bantuan Operasional Sekolah funds, used by schools across Gunungkidul. Simplifies compliance reporting for school operational budget tax obligations.',
-                'card6-h1': 'Structured tax reporting workflow for BOS fund compliance',
-                'card6-h2': 'Multi-school access with authentication',
-                'card7-title': 'Dinas Pendidikan Official Website',
-                'card7-desc': 'Official website and publication system for the Gunungkidul District Education Office. Serves as the primary digital presence and communication channel for the institution.',
-                'card7-h1': 'Institutional website with CMS for news and publications',
-                'card7-h2': 'Public information portal for the regency education office',
-                'card8-title': 'ASPD Computer-Based Test (CBT) System',
-                'card8-desc': 'A computer-based testing system for the ASPD (Asesmen Standarisasi Pendidikan Daerah) examination, built with Python Flask. Uniquely designed to work both online and fully offline — deployable via a VirtualBox disk image, making it accessible even in schools with limited or no internet connectivity.',
-                'card8-h1': 'Hybrid deployment — works online and fully offline via VirtualBox VM image',
-                'card8-h2': 'Python Flask backend, the only non-PHP project in the stack',
-                'card8-h3': 'Designed for low-connectivity school environments across the regency',
-                'card8-h4': 'Secure exam session management with time controls',
-            },
-            id: {
-                'page-title': 'Proyek Kami',
-                'h1': 'APA YANG TELAH<br><em>KAMI BANGUN</em>',
-                'header-desc': 'Sistem produksi yang digunakan di berbagai instansi pemerintah Indonesia — dari infrastruktur data pendidikan hingga microsite penerbangan sipil. Setiap proyek aktif, terpelihara, dan melayani pengguna nyata.',
-                'filter-client': 'Klien',
-                'filter-stack': 'Teknologi',
-                'pill-all': 'Semua',
-                'results-showing': 'Menampilkan',
-                'results-of': 'dari 8 proyek',
-                'status-live': 'Aktif',
-                'role-label': 'Peran:',
-                'role-value': 'Pengembang Fullstack',
-                'card-link': 'Kunjungi',
-                'skills-eyebrow': 'Kompetensi Utama',
-                'skills-h2': 'APA YANG<br><em style="-webkit-text-stroke:1.5px var(--text);color:transparent;">SAYA KUASAI</em>',
-                'skill-backend': 'Backend',
-                'skill-frontend': 'Frontend',
-                'skill-database': 'Basis Data',
-                'skill-infra': 'Infrastruktur',
-                'skill-security': 'Keamanan',
-                'skill-arch': 'Arsitektur',
-                'no-results': '— Tidak ada proyek yang sesuai filter —',
-                'theme-system': 'Sistem',
-                'theme-light': 'Terang',
-                'theme-dark': 'Gelap',
-                'card1-title': 'Sistem Frequently Asked Questions',
-                'card1-desc': 'Sistem manajemen FAQ berbasis web untuk Direktorat Jenderal Perhubungan Udara. Membantu pimpinan memetakan dan mengorganisasi pertanyaan yang sering diajukan lintas unit organisasi, dengan kepemilikan jelas per pihak yang bertanggung jawab.',
-                'card1-h1': 'Manajemen CRUD lengkap, tanya-jawab dipisah per penanggung jawab',
-                'card1-h2': 'Pencarian berbasis kata kunci untuk akses informasi cepat',
-                'card1-h3': 'Autentikasi pengguna dengan kontrol akses berbasis peran',
-                'card1-h4': 'Dashboard admin untuk manajemen konten menyeluruh',
-                'card2-title': 'Microsite OBU — Otoritas Bandara Udara',
-                'card2-desc': 'Platform microsite yang dapat diskalakan untuk setiap Otoritas Bandara Udara di bawah Ditjen Perhubungan Udara. Masing-masing otoritas mendapat ruang publikasi tersendiri dalam satu sistem terpadu.',
-                'card2-h1': 'Arsitektur multi-tenant — satu sistem untuk banyak otoritas bandara',
-                'card2-h2': 'Routing dinamis berbasis slug per otoritas',
-                'card2-h3': 'Dibangun dengan Tailwind CSS untuk UI modern dan responsif',
-                'card3-title': 'Microsite UPBU — Unit Penyelenggara Bandar Udara',
-                'card3-desc': 'Sistem microsite dan publikasi untuk setiap Unit Penyelenggara Bandar Udara (UPBU) di bawah Ditjen Perhubungan Udara. Mempermudah dokumentasi dan komunikasi publik setiap unit bandara.',
-                'card3-h1': 'CMS terpadu yang mengelola microsite berbagai bandara',
-                'card3-h2': 'Struktur URL berbasis slug per unit bandara',
-                'card3-h3': 'Terintegrasi dengan infrastruktur domain utama Kemenhub',
-                'card4-title': 'Website Balai Teknik Penerbangan',
-                'card4-desc': 'Website publikasi resmi Balai Teknik Penerbangan, pusat teknik penerbangan di bawah Kemenhub. Dilengkapi sistem manajemen konten lengkap dengan halaman publik untuk komunikasi kelembagaan.',
-                'card4-h1': 'Sistem manajemen konten dengan panel admin',
-                'card4-h2': 'Website kelembagaan berorientasi publik',
-                'card4-h3': 'Dibangun dengan Tailwind CSS dan MariaDB',
-                'card5-title': 'Sistem Monitoring Website Sekolah',
-                'card5-desc': 'Platform monitoring dan publikasi terpusat untuk sekolah-sekolah di Kabupaten Gunungkidul. Dibangun dengan CodeIgniter dan SQL Server, setiap sekolah memiliki microsite sendiri dalam satu sistem yang dikelola.',
-                'card5-h1': 'Platform microsite multi-sekolah dalam satu sistem admin',
-                'card5-h2': 'Backend SQL Server untuk penanganan data tingkat enterprise',
-                'card5-h3': 'Alat publikasi untuk dokumentasi dan pengumuman sekolah',
-                'card6-title': 'Sistem Pelaporan Pajak Dana BOS',
-                'card6-desc': 'Sistem pelaporan pajak untuk dana Bantuan Operasional Sekolah yang digunakan sekolah-sekolah di Gunungkidul. Menyederhanakan pelaporan kepatuhan kewajiban pajak anggaran operasional sekolah.',
-                'card6-h1': 'Alur pelaporan pajak terstruktur untuk kepatuhan dana BOS',
-                'card6-h2': 'Akses multi-sekolah dengan autentikasi',
-                'card7-title': 'Website Resmi Dinas Pendidikan',
-                'card7-desc': 'Website resmi dan sistem publikasi Dinas Pendidikan Kabupaten Gunungkidul. Berfungsi sebagai kehadiran digital utama dan saluran komunikasi institusi.',
-                'card7-h1': 'Website kelembagaan dengan CMS untuk berita dan publikasi',
-                'card7-h2': 'Portal informasi publik untuk dinas pendidikan kabupaten',
-                'card8-title': 'Sistem Computer-Based Test (CBT) ASPD',
-                'card8-desc': 'Sistem ujian berbasis komputer untuk ujian ASPD (Asesmen Standarisasi Pendidikan Daerah), dibangun dengan Python Flask. Dirancang untuk bekerja online maupun offline penuh — dapat di-deploy via image VirtualBox, sehingga dapat diakses di sekolah dengan konektivitas terbatas.',
-                'card8-h1': 'Deployment hibrida — bekerja online dan offline penuh via VirtualBox VM image',
-                'card8-h2': 'Backend Python Flask, satu-satunya proyek non-PHP dalam stack',
-                'card8-h3': 'Dirancang untuk sekolah dengan konektivitas rendah di seluruh kabupaten',
-                'card8-h4': 'Manajemen sesi ujian aman dengan kontrol waktu',
-            }
-        };
+        // ===================== LANGUAGE =====================
+        let currentLang = localStorage.getItem('lang') || 'en';
 
         function setLang(lang) {
-            localStorage.setItem(LANG_KEY, lang);
-            document.getElementById('lang-select').value = lang;
+            currentLang = lang;
+            localStorage.setItem('lang', lang);
             document.documentElement.lang = lang;
-            const t = translations[lang];
-            document.querySelectorAll('[data-i18n]').forEach(el => {
-                const key = el.dataset.i18n;
-                if (t[key] !== undefined) el.textContent = t[key];
+            document.getElementById('lang-btn').textContent = lang === 'en' ? 'ID' : 'EN';
+            document.querySelectorAll('[data-en][data-id]').forEach(el => {
+                const text = el.getAttribute('data-' + lang);
+                if (text) el.innerHTML = text;
             });
-            document.querySelectorAll('[data-i18n-html]').forEach(el => {
-                const key = el.dataset.i18nHtml;
-                if (t[key] !== undefined) el.innerHTML = t[key];
-            });
-            const ts = document.getElementById('theme-select');
-            ts.options[0].text = t['theme-system'];
-            ts.options[1].text = t['theme-light'];
-            ts.options[2].text = t['theme-dark'];
-            document.title = t['page-title'];
+            document.title = lang === 'en' ? 'Projects — Greyfikal Apriyuda' : 'Proyek — Greyfikal Apriyuda';
         }
+        document.getElementById('lang-btn').addEventListener('click', () => setLang(currentLang === 'en' ? 'id' : 'en'));
 
-        // Initialize saved preferences
-        (function () {
-            const savedTheme = localStorage.getItem(STORAGE_KEY) || 'system';
-            const savedLang = localStorage.getItem(LANG_KEY) || 'en';
-            setTheme(savedTheme);
-            setLang(savedLang);
-        })();
+        // ===================== THEME =====================
+        const themeBtn = document.getElementById('theme-btn');
+        let theme = localStorage.getItem('theme') || 'light';
 
-        // =====================
-        // FILTER LOGIC
-        // =====================
+        function setTheme(t) {
+            theme = t;
+            localStorage.setItem('theme', t);
+            document.documentElement.setAttribute('data-theme', t);
+            themeBtn.textContent = t === 'dark' ? '◑' : '◐';
+        }
+        themeBtn.addEventListener('click', () => setTheme(theme === 'dark' ? 'light' : 'dark'));
+
+        setLang(currentLang);
+        setTheme(theme);
+
+        // ===================== FILTER LOGIC =====================
         let activeClient = 'all';
         let activeTech = 'all';
-        const cards = document.querySelectorAll('.projects-grid > .card');
+        const cards = document.querySelectorAll('#project-grid > .project');
         const countEl = document.getElementById('count');
         const noResults = document.getElementById('no-results');
 
@@ -1315,19 +551,19 @@
             let visible = 0;
             cards.forEach(card => {
                 const clientMatch = activeClient === 'all' || card.dataset.client === activeClient;
-                const techMatch = activeTech === 'all' || (card.dataset.tech || '').includes(activeTech);
+                const techMatch = activeTech === 'all' || (card.dataset.tech || '').split(' ').includes(activeTech);
                 const show = clientMatch && techMatch;
                 card.style.display = show ? '' : 'none';
                 if (show) visible++;
             });
             countEl.textContent = visible;
-            noResults.classList.toggle('show', visible === 0);
+            noResults.classList.toggle('is-shown', visible === 0);
         }
 
         document.querySelectorAll('[data-filter="client"]').forEach(btn => {
             btn.addEventListener('click', () => {
-                document.querySelectorAll('[data-filter="client"]').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
+                document.querySelectorAll('[data-filter="client"]').forEach(b => b.classList.remove('is-active'));
+                btn.classList.add('is-active');
                 activeClient = btn.dataset.value;
                 applyFilters();
             });
@@ -1335,20 +571,20 @@
 
         document.querySelectorAll('[data-filter="tech"]').forEach(btn => {
             btn.addEventListener('click', () => {
-                document.querySelectorAll('[data-filter="tech"]').forEach(b => b.classList.remove('active-2'));
-                btn.classList.add('active-2');
+                document.querySelectorAll('[data-filter="tech"]').forEach(b => b.classList.remove('is-active'));
+                btn.classList.add('is-active');
                 activeTech = btn.dataset.value;
                 applyFilters();
             });
         });
 
-        // =====================
-        // SCROLL REVEAL
-        // =====================
-        const observer = new IntersectionObserver(entries => {
-            entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+        // ===================== REVEAL =====================
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(e => {
+                if (e.isIntersecting) { e.target.classList.add('is-in'); revealObserver.unobserve(e.target); }
+            });
         }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
-        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+        document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
     </script>
 </body>
 
